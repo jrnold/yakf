@@ -11,7 +11,14 @@ setClass("DLM",
                         P1 = "matrix",
                         cc = "numeric",
                         dd = "numeric",
-                        HG = "matrix"))
+                        HG = "matrix",
+                        tv_GG = "matrix",
+                        tv_HH = "matrix",
+                        tv_T = "matrix",
+                        tv_Z = "matrix",
+                        tv_cc = "matrix",
+                        tv_dd = "matrix",
+                        X = "matrix"))
 
 validity.DLM <- function(object) {
   m <- nrow(object@T) # number of states
@@ -43,10 +50,28 @@ validity.DLM <- function(object) {
   if (! identical(dim(object@HG), c(m, N))) {
     return(sprintf("dim(object@HH) != c(%d, %d)", m, N))
   }
+  # Time varying slots must have same dimensions as parent slots
+  for (i in c("GG", "HH", "T", "Z", "cc", "dd")) {
+    tvslot <- sprintf("tv_%", i)
+    if (! identical(dim(slot(object, tvslot)), dim(slot(object, i)))) {
+      return(sprintf("slots %s and %s do not have the same dimension",
+                     i, tvslot))
+    }
+  }
+  # Entries in time-varying parameters must point to a row in X
+  for (i in paste0("tv_", c("GG", "HH", "T", "Z", "cc", "dd"))) {
+    for (j in unique(Filter(Negate(is.na), as.numeric(slot(object, i))))) {
+      if ((as.integer(j) < 1) || (as.integer(j) > ncol(object@X))) {
+        return(sprintf("value %d in object@%s is invalid",
+                       as.integer(j), i))
+      }
+    }
+  }
   TRUE
 }
 
 setValidity("DLM", validity.DLM)
+
 dlm_Omega <- function(object) {
   rbind(cbind(object@HH, object@HG), cbind(t(object@HG), object@GG))
 }
