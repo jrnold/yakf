@@ -88,18 +88,51 @@ validity.DLM <- function(object) {
 
 setValidity("DLM", validity.DLM)
 
-dlm_Omega <- function(object) {
-  rbind(cbind(object@HH, object@HG), cbind(t(object@HG), object@GG))
+get_tv_slot <- function(object, slot, i) {
+  if (length(i) > 1) {
+    i <- i[1]
+    warning("only first element of i used")
+  }
+  tvi <- slot(object, sprintf("tv_%s", i))
+  if (is.null(i) || (all(is.na(tvi)))) {
+    x <- slot(object, i)
+  } else {
+    x <- slot(object, i)
+    ind <- which(Negate(is.na)(tvv), arr.ind = TRUE)
+    x[ind] <- object@X[i, as.integer(x[!is.na(x)])]
+  }
+  x
 }
 
-dlm_phi <- function(object) {
-  rbind(object@T, object@Z)
+dlm_cc <- function(object, tv = NULL) get_tv_slot(object, "cc", tv)
+
+dlm_dd <- function(object, tv = NULL) get_tv_slot(object, "dd", tv)
+
+dlm_T <- function(object, tv = NULL) get_tv_slot(object, "T", tv)
+
+dlm_Z <- function(object, tv = NULL) get_tv_slot(object, "Z", tv)
+
+dlm_HH <- function(object, tv = NULL) get_tv_slot(object, "HH", tv)
+
+dlm_GG <- function(object, tv = NULL) get_tv_slot(object, "GG", tv)
+
+dlm_HG <- function(object, tv = NULL) get_tv_slot(object, "HG", tv)
+
+dlm_Omega <- function(object, tv=NULL) {
+  HH <- dlm(HH, tv)
+  GG <- dlm(GG, tv)
+  HG <- dlm(HG, tv)
+  rbind(cbind(HH, HG), cbind(t(HG), GG))
+}
+
+dlm_phi <- function(object,tv = NULL) {
+  rbind(dlm_T(object, tv), dlm_Z(object, tv))
 }
 
 dlm_Sigma <- function(object) {
   rbind(object@P1, object@a1)
 }
 
-dlm_delta <- function(object) {
-  matrix(c(object@dd, object@cc))
+dlm_delta <- function(object, tv = NULL) {
+  matrix(c(dlm_dd(object, tv), dlm_cc(object, tv)))
 }

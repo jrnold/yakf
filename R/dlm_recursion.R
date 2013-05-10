@@ -35,12 +35,14 @@ dlm_recursion <- function(object, n, a1 = NULL) {
     }
     a[ , 1] <- a1
   }
-
-  delta <- dlm_delta(object)
-  Phi <- dlm_phi(object)
-  Omega <- dlm_Omega(object)
-  
+  ## TODO:
+  ## Speed ups
+  ## - draw all normal RV and multiply by cholesky of Omega
+  ## - check if TV, and only draw delta / Phi / Omega if TV
   for (i in 1:n) {
+    delta <- dlm_delta(object, i)
+    Phi <- dlm_phi(object, i)
+    Omega <- dlm_Omega(object, i)
     ay <- as.numeric(rmvnorm(1, delta + Phi %*% a[ , i], Omega))
     a[ , i + 1] <- ay[1:m]
     y[ , i] <- ay[m + 1:N]
