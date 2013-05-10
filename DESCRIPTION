@@ -1,14 +1,22 @@
 Package: yakf
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Authors@R: person("Jeffrey B.", "Arnold",
-	         email = "jeffrey.arnold@gmail.com", role = c("aut", "cre"))
+    email = "jeffrey.arnold@gmail.com", role = c("aut", "cre"))
 Version: 0.0.1
 License: GPL-3
 Title: Yet another Kalman Filter package
-Description: Functions and classes for dynamic linear models and 
-	     Kalman filters, smoothers, and simulation.
+Description: Functions and classes for dynamic linear models and
+    Kalman filters, smoothers, and simulation.
+Depends:
+    methods
+Imports:
+    mvtnorm
 Suggests:
     testthat,
     roxygen2
 Collate:
-    'yakf-package.r'
+    'yakf-package.R'
+    'DLM-class.R'
+    'DLM.R'
+    'dlm_polynomial.R'
+    'dlm_recursion.R'
