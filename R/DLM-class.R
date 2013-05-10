@@ -16,8 +16,8 @@ setClass("DLM",
                         tv_HH = "matrix",
                         tv_T = "matrix",
                         tv_Z = "matrix",
-                        tv_cc = "matrix",
-                        tv_dd = "matrix",
+                        tv_cc = "integer"
+                        tv_dd = "integer",
                         X = "matrix"))
 
 validity.DLM <- function(object) {
@@ -50,6 +50,14 @@ validity.DLM <- function(object) {
   if (! identical(dim(object@HG), c(m, N))) {
     return(sprintf("dim(object@HH) != c(%d, %d)", m, N))
   }
+  # check that matrices are numeric
+  for (i in c("T", "Z", "GG", "HH", "P1", "HG",
+              "tv_T", "tv_T", "tv_GG", "tv_HH")) {
+    if (mode(slot(object, i)) != "numeric") {
+      return(sprintf("object@%s does not have storage mode numeric", i))
+    }
+  }
+  
   # Time varying slots must have same dimensions as parent slots
   for (i in c("GG", "HH", "T", "Z", "cc", "dd")) {
     tvslot <- sprintf("tv_%", i)
@@ -60,14 +68,16 @@ validity.DLM <- function(object) {
   }
   # Entries in time-varying parameters must point to a row in X
   for (i in paste0("tv_", c("GG", "HH", "T", "Z", "cc", "dd"))) {
+    # Check that entries are valid
     for (j in unique(Filter(Negate(is.na), as.numeric(slot(object, i))))) {
       if ((as.integer(j) < 1) || (as.integer(j) > ncol(object@X))) {
         return(sprintf("value %d in object@%s is invalid",
                        as.integer(j), i))
       }
     }
+    # If there are any time-varying parameters, object@X must have some rows
     if (any(is.na(slot(object, i)))) {
-      if (nrow(object@X) < 0) {
+      if (nrow(object@X) < 1) {
         return(sprintf("object@%s has time-varying parameters, but object@X has no rows",
                        i))
       }
