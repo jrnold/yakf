@@ -66,6 +66,12 @@ validity.DLM <- function(object) {
                        as.integer(j), i))
       }
     }
+    if (any(is.na(slot(object, i)))) {
+      if (nrow(object@X) < 0) {
+        return(sprintf("object@%s has time-varying parameters, but object@X has no rows",
+                       i))
+      }
+    }
   }
   TRUE
 }
