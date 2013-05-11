@@ -97,22 +97,9 @@ validity.DLM <- function(object) {
 
 setValidity("DLM", validity.DLM)
 
-## Accessor Utility Functions
 
-#' rdname dlm-accessors
-#' @aliases dlm_cc dlm_dd dlm_T dlm_Z dlm_HH dlm_HG dlm_Omega dlm_Phi dlm_Sigma dlm_delta
-#' @title Access data from DLM objects
-#'
-#' These are some utility functions to access system matrices
-#' from a DLM object. They are particularly useful if the object has
-#' time varying parameters.
-#'
-#' @param object An object of class \code{DLM}.
-#' @param i time
-#' @return A \code{matrix} or \code{numeric} vector.
-#'
-#' @section Details:
-#' @
+
+## Accessor Utility Functions
 get_tv_slot <- function(object, slot, i) {
   if (length(i) > 1) {
     i <- i[1]
@@ -128,6 +115,37 @@ get_tv_slot <- function(object, slot, i) {
   }
   x
 }
+
+#' @name dlm-accessors
+#' @rdname dlm-accessors
+#' @aliases dlm_cc dlm_dd dlm_T dlm_Z dlm_HH dlm_HG dlm_Omega dlm_Phi dlm_Sigma dlm_delta
+#' @title Access data from DLM objects
+#'
+#' @description These are some utility functions to access system matrices
+#' from a DLM object. They are particularly useful if the object has
+#' time varying parameters.
+#'
+#' @param object An object of class \code{DLM}.
+#' @param i time
+#' @return A \code{matrix} or \code{numeric} vector.
+#'
+#' @section Details:
+#' \describe{
+#' \item{\code{get_cc}}{Return \eqn{c_t} vector}
+#' \item{\code{get_dd}}{Return \eqn{d_t} vector}
+#' \item{\code{get_T}}{Return \eqn{T_t} matrix}
+#' \item{\code{get_Z}}{Return \eqn{Z_t} matrix}
+#' \item{\code{get_HH}}{Return \eqn{H_t H_t'} matrix}
+#' \item{\code{get_GG}}{Return \eqn{G_t G_t'} matrix}
+#' \item{\code{get_HG}}{Return \eqn{H_t G_t'} matrix}
+#' \item{\code{get_Omega}}{Return the matrix,
+#' \deqn{\Omega_t = ( H_t H_t' ,  H_t G_t' ; G_t H_t' , G_t G_t' )}
+#' }
+#' \item{\code{get_delta}}{Return the matrix \deqn{\delta_t = ( d_t ; c_t )}}
+#' \item{\code{get_Phi}}{Return the matrix \deqn{\Phi_t = ( T_t ; Z_t )}}
+#' \item{\code{get_Sigma}}{Return the matrix \deqn{\Sigma = (P_1,  a_1' )}}
+#'}
+NULL
 
 dlm_cc <- function(object, i = NULL) get_tv_slot(object, "cc", i)
 
