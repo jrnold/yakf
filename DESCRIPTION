@@ -20,3 +20,8 @@ Collate:
     'DLM.R'
     'dlm_polynomial.R'
     'dlm_recursion.R'
+    'add-method.R'
+    'bdiag.R'
+    'dlm_arma.R'
+    'dlm_seasonal.R'
+    'dlm_spline.R'

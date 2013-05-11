@@ -1,5 +1,5 @@
-#" @include yakf-package.R
-#' @include DLM-class.R
+#' @include yakf-package.R
+#' @include DLM.R
 #' @export dlm_polynomial
 NULL
 
@@ -12,9 +12,11 @@ NULL
 #' \code{order = 2} is a local trend model.
 #' @return An object of class \code{\linkS4class{DLM}}.
 #' @examples
+#' # local level model
+#' dlm_polynomial(matrix(1), 1, order = 1)
 #' # local trend model
 #' dlm_polynomial(diag(1, 2, 2), 1, order = 2)
-#' # 5th order
+#' # higer-order polynomial
 #' dlm_polynomial(diag(1, 5, 5), 1, order = 5)
 dlm_polynomial <- function(HH, GG, order = 1, a1 = NULL, P1 = NULL, cc = NULL,
                            dd = NULL, HG = NULL) {
@@ -24,6 +26,6 @@ dlm_polynomial <- function(HH, GG, order = 1, a1 = NULL, P1 = NULL, cc = NULL,
       T[i, j] <- 1
     }
   }
-  Z <- c(1, rep(0, order - 1))
-  DLM(T, HH, Z, GG, a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG)
+  Z <- diag(1, 1, order)
+  DLM(T = T, HH = HH, Z = Z, GG = GG, a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG)
 }

@@ -22,7 +22,7 @@ add.DLM <- function(e1, e2) {
   # covariance
   HG <- bdiag(e1@HG, e2@HG)
   # initial
-  a <- c(e1@a1, e2@a1)
+  a1 <- c(e1@a1, e2@a1)
   P1 <- bdiag(e1@P1, e2@P1)
   # TODO: Time varying parameters
   X <- cbind(e1@X, e2@X)
@@ -58,4 +58,4 @@ add.DLM <- function(e1, e2) {
       X = X)
 }
 
-setMethod("+", c(e1 = "DLM", e2 = "DLM"), add.dlm)
+setMethod("+", c(e1 = "DLM", e2 = "DLM"), add.DLM)

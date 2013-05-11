@@ -34,7 +34,7 @@ namask <- function(x) {
 #' @param tv_HG \code{matrix} of same dimension as \code{HG}.
 #' @param X \code{matrix} containing time varying data.
 #' @return An object of class \code{\linkS4class{DLM}}.
-#' @seeAlso \code{\linkS4class{DLM}} for a description of DLM objects.
+#' @seealso \code{\linkS4class{DLM}} for a description of DLM objects.
 DLM <- function(T, HH, Z, GG, a1 = NULL, P1 = NULL,
                 cc = NULL, dd = NULL, HG = NULL,
                 tv_T = NULL, tv_HH = NULL,
@@ -58,14 +58,14 @@ DLM <- function(T, HH, Z, GG, a1 = NULL, P1 = NULL,
   if (is.null(P1)) P1 <- diag(kappa * 10^6, m, m)
   if (is.null(HG)) HG <- matrix(0, m, N)
   # time varying matrices
-  if (is.null(tv_T)) tv_T <- namask(TV)
-  if (is.null(tv_HH)) tv_HH <- namask(HH)
+  if (is.null(tv_T)) tv_T <- namask(T)
   if (is.null(tv_Z)) tv_Z <- namask(Z)
+  if (is.null(tv_HH)) tv_HH <- namask(HH)
   if (is.null(tv_GG)) tv_GG <- namask(GG)
-  if (is.null(tv_cc)) tv_Z <- namask(cc)
-  if (is.null(tv_dd)) tv_Z <- namask(dd)
+  if (is.null(tv_cc)) tv_cc <- namask(cc)
+  if (is.null(tv_dd)) tv_dd <- namask(dd)
   if (is.null(tv_HG)) tv_HG <- namask(HG)
-  if (is.null(X)) <- matrix(nrow=0, ncol=0)
+  if (is.null(X)) X <- matrix(nrow=0, ncol=0)
   new("DLM", T = T, HH = HH, Z = Z, GG =GG,
       a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG,
       tv_T = tv_T, tv_HH = tv_HH,

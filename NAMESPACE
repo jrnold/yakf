@@ -1,5 +1,8 @@
 export(DLM)
+export(dlm_arma)
 export(dlm_polynomial)
 export(dlm_recursion)
+export(dlm_spline)
 exportClasses(DLM)
+exportMethods("+")
 import(mvtnorm)

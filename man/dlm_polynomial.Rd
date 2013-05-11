@@ -18,9 +18,11 @@
   with an n-th order polynomial.
 }
 \examples{
+# local level model
+dlm_polynomial(matrix(1), 1, order = 1)
 # local trend model
 dlm_polynomial(diag(1, 2, 2), 1, order = 2)
-# 5th order
+# higer-order polynomial
 dlm_polynomial(diag(1, 5, 5), 1, order = 5)
 }
 

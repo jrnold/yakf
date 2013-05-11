@@ -2,12 +2,14 @@
 \alias{dlm_recursion}
 \title{Generate Samples from a DLM}
 \usage{
-  dlm_recursion(object, n, a1 = NULL)
+  dlm_recursion(object, n = NULL, a1 = NULL)
 }
 \arguments{
   \item{object}{\code{DLM}}
 
-  \item{n}{\code{numeric} Number of samples to draw}
+  \item{n}{\code{numeric} Number of samples to draw. If
+  NULL, then \code{object} must have time-varying
+  parameters.}
 
   \item{a1}{\code{numeric} Initial state. If missing, a
   random initial state is drawn from the distribution of

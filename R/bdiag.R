@@ -1,6 +1,6 @@
 #' Create Block Diagonal Matrix
 #'
-#' @parm ... \code{matrix} object to form the diagonal blocks.
+#' @param ... \code{matrix} object to form the diagonal blocks.
 #' @param offdiag value used to fill in the off-diagonal elements.
 #' @return An object of class \code{matrix} with the matrices from \code{...}
 #' along the diagonal, and \code{offdiag} for the entries off the block diagonal.

@@ -2,6 +2,13 @@
 #' @exportClass DLM
 NULL
 
+#' @docType class
+#' @rdname DLM-class
+#' @aliases DLM-class
+#' @title DLM class
+#'
+#' The \code{"DLM"} class represents a dynamic linear model,
+#' also called state-space model.
 setClass("DLM",
          representation(T = "matrix",
                         Z = "matrix",
@@ -16,7 +23,7 @@ setClass("DLM",
                         tv_HH = "matrix",
                         tv_T = "matrix",
                         tv_Z = "matrix",
-                        tv_cc = "integer"
+                        tv_cc = "integer",
                         tv_dd = "integer",
                         X = "matrix"))
 
@@ -60,7 +67,7 @@ validity.DLM <- function(object) {
   
   # Time varying slots must have same dimensions as parent slots
   for (i in c("GG", "HH", "T", "Z", "cc", "dd")) {
-    tvslot <- sprintf("tv_%", i)
+    tvslot <- sprintf("tv_%s", i)
     if (! identical(dim(slot(object, tvslot)), dim(slot(object, i)))) {
       return(sprintf("slots %s and %s do not have the same dimension",
                      i, tvslot))
@@ -76,7 +83,7 @@ validity.DLM <- function(object) {
       }
     }
     # If there are any time-varying parameters, object@X must have some rows
-    if (any(is.na(slot(object, i)))) {
+    if (any(! is.na(slot(object, i)))) {
       if (nrow(object@X) < 1) {
         return(sprintf("object@%s has time-varying parameters, but object@X has no rows",
                        i))
@@ -98,41 +105,41 @@ get_tv_slot <- function(object, slot, i) {
     x <- slot(object, i)
   } else {
     x <- slot(object, i)
-    ind <- which(Negate(is.na)(tvv), arr.ind = TRUE)
+    ind <- which(Negate(is.na)(tvi), arr.ind = TRUE)
     x[ind] <- object@X[i, as.integer(x[!is.na(x)])]
   }
   x
 }
 
-dlm_cc <- function(object, tv = NULL) get_tv_slot(object, "cc", tv)
+dlm_cc <- function(object, i = NULL) get_tv_slot(object, "cc", i)
 
-dlm_dd <- function(object, tv = NULL) get_tv_slot(object, "dd", tv)
+dlm_dd <- function(object, i = NULL) get_tv_slot(object, "dd", i)
 
-dlm_T <- function(object, tv = NULL) get_tv_slot(object, "T", tv)
+dlm_T <- function(object, i = NULL) get_tv_slot(object, "T", i)
 
-dlm_Z <- function(object, tv = NULL) get_tv_slot(object, "Z", tv)
+dlm_Z <- function(object, i = NULL) get_tv_slot(object, "Z", i)
 
-dlm_HH <- function(object, tv = NULL) get_tv_slot(object, "HH", tv)
+dlm_HH <- function(object, i = NULL) get_tv_slot(object, "HH", i)
 
-dlm_GG <- function(object, tv = NULL) get_tv_slot(object, "GG", tv)
+dlm_GG <- function(object, i = NULL) get_tv_slot(object, "GG", i)
 
-dlm_HG <- function(object, tv = NULL) get_tv_slot(object, "HG", tv)
+dlm_HG <- function(object, i = NULL) get_tv_slot(object, "HG", i)
 
-dlm_Omega <- function(object, tv=NULL) {
-  HH <- dlm(HH, tv)
-  GG <- dlm(GG, tv)
-  HG <- dlm(HG, tv)
+dlm_Omega <- function(object, i = NULL) {
+  HH <- dlm_HH(object, i)
+  GG <- dlm_GG(object, i)
+  HG <- dlm_HG(object, i)
   rbind(cbind(HH, HG), cbind(t(HG), GG))
 }
 
-dlm_phi <- function(object,tv = NULL) {
-  rbind(dlm_T(object, tv), dlm_Z(object, tv))
+dlm_phi <- function(object,i = NULL) {
+  rbind(dlm_T(object, i), dlm_Z(object, i))
 }
 
 dlm_Sigma <- function(object) {
   rbind(object@P1, object@a1)
 }
 
-dlm_delta <- function(object, tv = NULL) {
-  matrix(c(dlm_dd(object, tv), dlm_cc(object, tv)))
+dlm_delta <- function(object, i = NULL) {
+  matrix(c(dlm_dd(object, i), dlm_cc(object, i)))
 }
