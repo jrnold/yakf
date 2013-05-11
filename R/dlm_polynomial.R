@@ -8,8 +8,9 @@ NULL
 #' The function creates an \code{\linkS4class{DLM}} object with
 #' an n-th order polynomial.
 #'
-#' @param order Order of the polynomial model. \code{order = 1} is a local level model,
+#' @param order \code{integer} Order of the polynomial model. \code{order = 1} is a local level model,
 #' \code{order = 2} is a local trend model.
+#' @param sigma2 \code{numeric} Observation variance, \eqn{G G' = \sigma^2}.
 #' @return An object of class \code{\linkS4class{DLM}}.
 #' @examples
 #' # local level model
@@ -18,7 +19,7 @@ NULL
 #' dlm_polynomial(diag(1, 2, 2), 1, order = 2)
 #' # higer-order polynomial
 #' dlm_polynomial(diag(1, 5, 5), 1, order = 5)
-dlm_polynomial <- function(HH, GG, order = 1, a1 = NULL, P1 = NULL, cc = NULL,
+dlm_polynomial <- function(HH, sigma2 = 1, order = 1, a1 = NULL, P1 = NULL, cc = NULL,
                            dd = NULL, HG = NULL) {
   T <- matrix(0, order, order)
   for (i in 1:nrow(T)) {
@@ -27,5 +28,6 @@ dlm_polynomial <- function(HH, GG, order = 1, a1 = NULL, P1 = NULL, cc = NULL,
     }
   }
   Z <- diag(1, 1, order)
+  GG <- matrix(sigma2, 1, 1)
   DLM(T = T, HH = HH, Z = Z, GG = GG, a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG)
 }

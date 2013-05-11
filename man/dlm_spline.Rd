@@ -27,6 +27,6 @@ dlm_spline(0.2)
 dlm_spline(0.2, diff(c(1, 2, 3, 5, 9, 12, 17, 20, 23, 25)))
 }
 \seealso{
-  Other create.DLM: \code{\link{dlm_arma}}
+  Other create-DLM: \code{\link{dlm_arma}}
 }
 

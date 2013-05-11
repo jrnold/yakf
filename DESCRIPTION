@@ -25,3 +25,7 @@ Collate:
     'dlm_arma.R'
     'dlm_seasonal.R'
     'dlm_spline.R'
+    'dlm-accessors.R'
+    'dlm_reg.R'
+    'utilities.R'
+    'dlm_cyclical.R'

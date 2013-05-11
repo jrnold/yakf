@@ -69,7 +69,7 @@ DLM <- function(T, HH, Z, GG, a1 = NULL, P1 = NULL,
   new("DLM", T = T, HH = HH, Z = Z, GG =GG,
       a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG,
       tv_T = tv_T, tv_HH = tv_HH,
-      tv_Z = tv_Z, tv_GG = tv_GG,
+      tv_Z = tv_Z, tv_GG = tv_GG, tv_HG = tv_HG,
       tv_cc = tv_cc, tv_dd = tv_dd,
       X = X)
 }
