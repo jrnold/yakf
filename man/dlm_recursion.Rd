@@ -16,10 +16,8 @@
   the initial state in \code{object}.}
 }
 \value{
-  A \code{list} with elements \describe{
-  \item{\code{a}}{\code{matrix} object with dimensions m x
-  (n + 1)} \item{\code{y}}{\code{matrix} object with
-  dimensions N x n. The first column is set to 0.} }
+  An object of class \code{\linkS4class{DlmSamples}}
+  containing the sampled states and observations.
 }
 \description{
   Generate sample states and observations from a specified

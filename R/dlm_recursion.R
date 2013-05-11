@@ -1,5 +1,5 @@
 #' @include yakf-package.R
-#' @include DLM-class.R
+#' @include DlmSamples-class.R
 #' @export dlm_recursion
 NULL
 
@@ -14,12 +14,9 @@ NULL
 #' @param a1 \code{numeric} Initial state. If missing, a random
 #' initial state is drawn from the distribution of the initial state
 #' in \code{object}.
-#' @return A \code{list} with elements
-#' \describe{
-#' \item{\code{a}}{\code{matrix} object with dimensions m x (n + 1)}
-#' \item{\code{y}}{\code{matrix} object with dimensions N x n.
-#' The first column is set to 0.}
-#' }
+#' @return An object of class \code{\linkS4class{DlmSamples}} containing
+#' the sampled states and observations.
+#' @seeAlso \code{\linkS4class{DlmSamples}}
 dlm_recursion <- function(object, n = NULL, a1 = NULL) {
   m <- length(object@a1)
   N <- nrow(object@Z)
@@ -65,5 +62,5 @@ dlm_recursion <- function(object, n = NULL, a1 = NULL) {
     a[ , i + 1] <- ay[1:m]
     y[ , i] <- ay[m + 1:N]
   }
-  list(a = a, y = y)
+  DlmSamples(a = a, y = y)
 }

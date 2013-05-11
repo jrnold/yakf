@@ -19,6 +19,7 @@ Collate:
     'DLM-class.R'
     'DLM.R'
     'dlm_polynomial.R'
+    'DlmSamples-class.R'
     'dlm_recursion.R'
     'add-method.R'
     'bdiag.R'
