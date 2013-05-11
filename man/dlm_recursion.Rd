@@ -23,4 +23,7 @@
   Generate sample states and observations from a specified
   \code{\linkS4class{"DLM"}} object.
 }
+\seealso{
+  \code{\linkS4class{DlmSamples}}
+}
 

@@ -16,7 +16,7 @@ NULL
 #' in \code{object}.
 #' @return An object of class \code{\linkS4class{DlmSamples}} containing
 #' the sampled states and observations.
-#' @seeAlso \code{\linkS4class{DlmSamples}}
+#' @seealso \code{\linkS4class{DlmSamples}}
 dlm_recursion <- function(object, n = NULL, a1 = NULL) {
   m <- length(object@a1)
   N <- nrow(object@Z)
