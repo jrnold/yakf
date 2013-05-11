@@ -52,13 +52,13 @@ dlm_recursion <- function(object, n = NULL, a1 = NULL) {
   ## - check if TV, and only draw delta / Phi / Omega if TV
   if (! istv) {
     delta <- dlm_delta(object)
-    Phi <- dlm_phi(object)
+    Phi <- dlm_Phi(object)
     Omega <- dlm_Omega(object)
   }
   for (i in 1:n) {
     if (istv) {
       delta <- dlm_delta(object, i)
-      Phi <- dlm_phi(object, i)
+      Phi <- dlm_Phi(object, i)
       Omega <- dlm_Omega(object, i)
     }
     ay <- as.numeric(rmvnorm(1, delta + Phi %*% a[ , i], Omega))

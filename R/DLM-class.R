@@ -1,5 +1,7 @@
 #' @include yakf-package.R
 #' @exportClass DLM
+#' @export dlm_T dlm_Z dlm_HH dlm_GG dlm_HG dlm_cc dlm_dd
+#' @export dlm_Sigma dlm_Omega dlm_delta dlm_Phi
 NULL
 
 #' @docType class
@@ -95,6 +97,22 @@ validity.DLM <- function(object) {
 
 setValidity("DLM", validity.DLM)
 
+## Accessor Utility Functions
+
+#' rdname dlm-accessors
+#' @aliases dlm_cc dlm_dd dlm_T dlm_Z dlm_HH dlm_HG dlm_Omega dlm_Phi dlm_Sigma dlm_delta
+#' @title Access data from DLM objects
+#'
+#' These are some utility functions to access system matrices
+#' from a DLM object. They are particularly useful if the object has
+#' time varying parameters.
+#'
+#' @param object An object of class \code{DLM}.
+#' @param i time
+#' @return A \code{matrix} or \code{numeric} vector.
+#'
+#' @section Details:
+#' @
 get_tv_slot <- function(object, slot, i) {
   if (length(i) > 1) {
     i <- i[1]
@@ -132,7 +150,7 @@ dlm_Omega <- function(object, i = NULL) {
   rbind(cbind(HH, HG), cbind(t(HG), GG))
 }
 
-dlm_phi <- function(object,i = NULL) {
+dlm_Phi <- function(object,i = NULL) {
   rbind(dlm_T(object, i), dlm_Z(object, i))
 }
 
