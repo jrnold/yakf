@@ -61,6 +61,7 @@ dlm_cyclical <- function(omega, q = 1, sigma2 = 1, HH = NULL, a1 = NULL, P1 = NU
 #' @aliases dlm_cyclical_tau
 #' @param tau \code{numeric} The period, \eqn{\omega = \frac{2 \pi}{\tau}}.
 dlm_cyclical_tau <- function(tau, ...) {
+  check_positive(omega, "tau")
   omega <- (base::pi * 2) / tau
   dlm_cyclical(omega, ...)
 }
@@ -73,6 +74,7 @@ dlm_cyclical_season <- function(s, q = floor(s / 2), season = TRUE, ...) {
     stop("'q' cannot be larger than floor(s / 2)")
   }
   s <- as.integer(len_one_arg(s, "s"))
+  check_positive(omega, "s")
   omega <- (base::pi * 2) / s
   dlm_cyclical(omega, q = q, season = TRUE,  ...)
 }
