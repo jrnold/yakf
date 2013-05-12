@@ -27,11 +27,11 @@ cycl_trans_mat <- function(i, omega) {
 dlm_cyclical <- function(omega, q = 1, GG = 1, HH = NULL, a1 = NULL, P1 = NULL, season = FALSE) {
   ## Checks
   q <- as.integer(len_one_arg(q, "q"))
-  sigma2 <- len_one_arg(sigma2)
+  GG <- len_one_arg(GG)
   season <- len_one_arg(season)
   check_positive(q, "q")
   check_positive(omega, "omega")
-  check_positive(sigma2, "sigma2", include_zero = TRUE)
+  check_positive(GG, "GG", include_zero = TRUE)
   ## body
   ## Special seasonal case in which s is even, q = s / 2
   s <- as.integer((2 * base::pi) / omega)

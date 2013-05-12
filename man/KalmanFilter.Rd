@@ -1,0 +1,25 @@
+\docType{class}
+\name{KalmanFilter}
+\alias{KalmanFilter}
+\title{Kalman filter results}
+\usage{
+  KalmanFilter(...)
+}
+\description{
+  Class containing results from a Kalman filter, as
+  produced by (\code{\link{kalman_filter}}).
+}
+\section{Slots}{
+  \describe{ \item{\code{v}}{\code{"Matrix"} of size N x n.
+  The forecast errors.} \item{\code{K}}{\code{"list"} of
+  \code{"Matrix"} obects, each of dimension N x m
+  containing the Kalman gain for each observation.}
+  \item{\code{Finv}}{\code{"list"} of \code{"Matrix"}
+  obects, each of dimension N x N containing the
+  \eqn{F^{-1}} matrices.} }
+}
+\seealso{
+  \code{\link{kalman_filter}}, which returns objects of
+  this class.
+}
+
