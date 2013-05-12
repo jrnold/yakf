@@ -14,15 +14,15 @@ add.DLM <- function(e1, e2) {
   }
   # observation
   ## Only the observation intercept from the 1st object is used
-  cc <- e1@cc
-  T <- cBind(e1@T, e2@T)
+  T <- bdiag(e1@T, e2@T)
+  Z <- cBind(e1@Z, e2@Z)
+  # covar
   HH <- bdiag(e1@HH, e2@HH)
-  # system
+  GG <- e1@GG # Since GG overlap, only GG from first model is used
+  HG <- rBind(e1@HG, e2@HG)
+  # Intercepts
   dd <- rBind(e1@dd, e2@dd)
-  Z <- bdiag(e1@Z, e2@Z)
-  GG <- e1@GG
-  # covariance
-  HG <- bdiag(e1@HG, e2@HG)
+  cc <- e1@cc
   # initial
   a1 <- rBind(e1@a1, e2@a1)
   P1 <- bdiag(e1@P1, e2@P1)

@@ -4,8 +4,8 @@
 \alias{dlm_cyclical_tau}
 \title{Create Fourier representation of a cyclical DLM}
 \usage{
-  dlm_cyclical(omega, q = 1, sigma2 = 1, HH = NULL,
-    a1 = NULL, P1 = NULL, season = FALSE)
+  dlm_cyclical(omega, q = 1, GG = 1, HH = NULL, a1 = NULL,
+    P1 = NULL, season = FALSE)
 
   dlm_cyclical_tau(tau, ...)
 
@@ -17,9 +17,6 @@
 
   \item{q}{\code{integer} The number of harmonics.}
 
-  \item{sigma2}{\code{numeric} The observation variance,
-  \eqn{G G' = \sigma^2}.}
-
   \item{HH}{\code{matrix} The system covariance matrix,
   \eqn{H H'}. If \code{NULL}, then \eqn{H H' = 0}.}
 
@@ -30,16 +27,16 @@
   \item{...}{Arguments passed to \code{dlm_cyclical}.}
 
   \item{tau}{\code{numeric} The period, \eqn{\omega =
-  \frac{2 \pi}{\tau}}.}
+  \frac{2 \pi}{\tau}}{2 pi / tau}.}
 
   \item{s}{\code{integer} The number of seasons,
-  \eqn{\omega = \frac{2 \pi}{s}}.}
+  \eqn{\omega = \frac{2 \pi}{s}}{omega = 2 p / s}.}
 }
 \value{
   An object of class \code{\linkS4class{DLM}}.
 }
 \description{
   This function creates a \code{\linkS4class{DLM}} object
-  for a cyclical model.
+  for with a Fourier representation of a cyclical model.
 }
 

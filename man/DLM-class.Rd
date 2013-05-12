@@ -38,8 +38,18 @@
 }
 
 \section{Details}{
-  The internal structure of this class is based on that
-  used in SsfPack and \pkg{dlm}. See the package vignette
-  for details.
+  The structure and notation of DLM models in this class is
+  based on that used in SsfPack and \pkg{dlm}. See the
+  package vignette for details.
+}
+\references{
+  Giovanni Petris (2010), An R Package for Dynamic Linear
+  Models.
+
+  Petris, Petrone, and Campagnoli, Dynamic Linear Models
+  with R, Springer (2009).
+
+  West and Harrison, Bayesian forecasting and dynamic
+  models (2nd ed.), Springer (1997).
 }
 

@@ -2,9 +2,8 @@
 \alias{dlm_polynomial}
 \title{n-th order polynomial DLM}
 \usage{
-  dlm_polynomial(order = 1, sigma2 = 1,
-    HH = Diagonal(order), a1 = NULL, P1 = NULL, cc = NULL,
-    dd = NULL, HG = NULL)
+  dlm_polynomial(order = 1, GG = 1, HH = NULL, a1 = NULL,
+    P1 = NULL, cc = NULL, dd = NULL, HG = NULL)
 }
 \arguments{
   \item{order}{\code{integer} Order of the polynomial

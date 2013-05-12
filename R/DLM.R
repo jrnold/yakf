@@ -10,17 +10,17 @@ empty_tv_idx <- function() matrix(nrow=0, ncol= 3)
 #' This is a utility function to create objects of class
 #' \code{\linkS4class{DLM}}.
 #'
-#' @param T \code{matrix} of dimension m x m.
-#' @param Z \code{matrix} of dimension N x m.
-#' @param HH \code{matrix} of dimension m x m. 
-#' @param GG \code{matrix} of dimension N x N. 
-#' @param P1 \code{matrix} of dimension m x m. If \code{NULL}, then
-#' a diffuse diagonal matrix is used. The diagonal of this matrix is set to 10^6 times the
+#' @param T \code{Matrix} of dimension m x m.
+#' @param Z \code{Matrix} of dimension N x m.
+#' @param HH \code{Matrix} of dimension m x m. 
+#' @param GG \code{Matrix} of dimension N x N. 
+#' @param P1 \code{Matrix} of dimension m x m. If \code{NULL}, then
+#' a diffuse diagonal Matrix is used. The diagonal of this Matrix is set to 10^6 times the
 #' maximum of 1 or values along the diagonal of \code{HH} and \code{GG}.
-#' @param a1 \code{numeric} of length m. If \code{NULL}, then set to a 0 vector.
-#' @param dd \code{numeric} of dimension N. If \code{NULL}, then set to a 0 vector.
-#' @param cc \code{numeric} of dimension m. If \code{NULL}, then set to a 0 vector.
-#' @param HG \code{matrix} of dimension m x N. If \code{NULL}, then set to a 0 matrix.
+#' @param a1 \code{Matrix} of length m. If \code{NULL}, then set to a 0 vector.
+#' @param dd \code{Matrix} of dimension N. If \code{NULL}, then set to a 0 vector.
+#' @param cc \code{Matrix} of dimension m. If \code{NULL}, then set to a 0 vector.
+#' @param HG \code{Matrix} of dimension m x N. If \code{NULL}, then it set to a 0 matrix.
 #' @param tv_T \code{matrix} Indices of time-varying elements in \code{T}. See details.
 #' @param tv_Z \code{matrix} Indices of time-varying elements in \code{Z}. See details.
 #' @param tv_HH \code{matrix} Indices of time-varying elements in \code{HH}. See details.
@@ -65,7 +65,7 @@ DLM <- function(T, Z, HH, GG, a1 = NULL, P1 = NULL,
   if (is.null(dd)) {
     dd <- Matrix(0, m, 1)
   } else {
-    dd <- as.numeric(dd)
+    dd <- Matrix(dd)
   }
   if (is.null(HG)) {
     HG <- Matrix(0, m, N)

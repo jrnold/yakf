@@ -8,31 +8,31 @@
     tv_HG = NULL, X = NULL)
 }
 \arguments{
-  \item{T}{\code{matrix} of dimension m x m.}
+  \item{T}{\code{Matrix} of dimension m x m.}
 
-  \item{Z}{\code{matrix} of dimension N x m.}
+  \item{Z}{\code{Matrix} of dimension N x m.}
 
-  \item{HH}{\code{matrix} of dimension m x m.}
+  \item{HH}{\code{Matrix} of dimension m x m.}
 
-  \item{GG}{\code{matrix} of dimension N x N.}
+  \item{GG}{\code{Matrix} of dimension N x N.}
 
-  \item{P1}{\code{matrix} of dimension m x m. If
-  \code{NULL}, then a diffuse diagonal matrix is used. The
-  diagonal of this matrix is set to 10^6 times the maximum
+  \item{P1}{\code{Matrix} of dimension m x m. If
+  \code{NULL}, then a diffuse diagonal Matrix is used. The
+  diagonal of this Matrix is set to 10^6 times the maximum
   of 1 or values along the diagonal of \code{HH} and
   \code{GG}.}
 
-  \item{a1}{\code{numeric} of length m. If \code{NULL},
+  \item{a1}{\code{Matrix} of length m. If \code{NULL}, then
+  set to a 0 vector.}
+
+  \item{dd}{\code{Matrix} of dimension N. If \code{NULL},
   then set to a 0 vector.}
 
-  \item{dd}{\code{numeric} of dimension N. If \code{NULL},
+  \item{cc}{\code{Matrix} of dimension m. If \code{NULL},
   then set to a 0 vector.}
 
-  \item{cc}{\code{numeric} of dimension m. If \code{NULL},
-  then set to a 0 vector.}
-
-  \item{HG}{\code{matrix} of dimension m x N. If
-  \code{NULL}, then set to a 0 matrix.}
+  \item{HG}{\code{Matrix} of dimension m x N. If
+  \code{NULL}, then it set to a 0 matrix.}
 
   \item{tv_T}{\code{matrix} Indices of time-varying
   elements in \code{T}. See details.}

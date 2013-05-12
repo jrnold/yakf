@@ -19,16 +19,20 @@ NULL
 #' dlm_polynomial(2, sigma2 = 2)
 #' # higer-order polynomial
 #' dlm_polynomial(order = 5, sigma2 = 3)
-dlm_polynomial <- function(order = 1, sigma2 = 1, HH = Diagonal(order),
+dlm_polynomial <- function(order = 1, GG = 1,
+                           HH = NULL,
                            a1 = NULL, P1 = NULL,
                            cc = NULL, dd = NULL,
                            HG = NULL) {
   if (order == 1) {
     T <- Matrix(1, 1, 1)
   } else {
-    T <- bandSparse(order, order, k = c(0, 1))
+    T <- bandSparse(order, order, k = c(0, 1),
+                    list(rep(1, order), rep(1, order - 1)))
   }
-  Z <- bandSparse(1, order, 0)
-  GG <- Matrix(sigma2, 1, 1)
+  Z <- Matrix(diag(1, 1, order))
+  ## Default variance is integrated polynomial with variance 1
+  HH <- Matrix(0, order, order)
+  HH[order, order] <- 1
   DLM(T = T, HH = HH, Z = Z, GG = GG, a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG)
 }

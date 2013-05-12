@@ -14,17 +14,17 @@ cycl_trans_mat <- function(i, omega) {
 #' @rdname dlm_cyclical
 #' @title Create Fourier representation of a cyclical DLM
 #'
-#' @description This function creates a \code{\linkS4class{DLM}} object for a cyclical model.
+#' @description This function creates a \code{\linkS4class{DLM}} object for with a Fourier representation
+#' of a cyclical model.
 #' 
 #' @param omega \code{numeric} The frequency.
 #' @param q \code{integer} The number of harmonics.
-#' @param sigma2 \code{numeric} The observation variance, \eqn{G G' = \sigma^2}.
 #' @param HH \code{matrix} The system covariance matrix, \eqn{H H'}. If \code{NULL}, then \eqn{H H' = 0}.
 #' @param season \code{logical} If \code{TRUE}, then the period is assumed to be an integer. This results in a special
 #' case if the period is even and \code{q = s / 2}.
 #' @param ... Arguments passed to \code{dlm_cyclical}.
 #' @return An object of class \code{\linkS4class{DLM}}.
-dlm_cyclical <- function(omega, q = 1, sigma2 = 1, HH = NULL, a1 = NULL, P1 = NULL, season = FALSE) {
+dlm_cyclical <- function(omega, q = 1, GG = 1, HH = NULL, a1 = NULL, P1 = NULL, season = FALSE) {
   ## Checks
   q <- as.integer(len_one_arg(q, "q"))
   sigma2 <- len_one_arg(sigma2)
@@ -53,13 +53,12 @@ dlm_cyclical <- function(omega, q = 1, sigma2 = 1, HH = NULL, a1 = NULL, P1 = NU
   if (is.null(HH)) {
     HH <- Matrix(0, m, m)
   }
-  GG <- Matrix(sigma2, 1, 1)
   DLM(T = T, Z = Z, HH = HH, GG = GG, a1 = a1, P1 = P1)
 }
 
 #' @rdname dlm_cyclical
 #' @aliases dlm_cyclical_tau
-#' @param tau \code{numeric} The period, \eqn{\omega = \frac{2 \pi}{\tau}}.
+#' @param tau \code{numeric} The period, \eqn{\omega = \frac{2 \pi}{\tau}}{2 pi / tau}.
 dlm_cyclical_tau <- function(tau, ...) {
   check_positive(omega, "tau")
   omega <- (base::pi * 2) / tau
@@ -68,7 +67,7 @@ dlm_cyclical_tau <- function(tau, ...) {
 
 #' @rdname dlm_cyclical
 #' @aliases dlm_cyclical_season
-#' @param s \code{integer} The number of seasons, \eqn{\omega = \frac{2 \pi}{s}}.
+#' @param s \code{integer} The number of seasons, \eqn{\omega = \frac{2 \pi}{s}}{omega = 2 p / s}.
 dlm_cyclical_season <- function(s, q = floor(s / 2), season = TRUE, ...) {
   if (q > floor(s / 2)) {
     stop("'q' cannot be larger than floor(s / 2)")
