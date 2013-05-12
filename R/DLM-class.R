@@ -63,8 +63,18 @@ dimlen <- function(x) {
 #'
 #' @section Details:
 #'
-#' The internal structure of this class is based on that used in SsfPack
+#' The structure and notation of DLM models in this class is based on that used in SsfPack
 #' and \pkg{dlm}. See the package vignette for details.
+#'
+#'
+#' @references
+#' 
+#' Giovanni Petris (2010), An R Package for Dynamic Linear Models.
+#  Journal of Statistical Software, 36(12), 1-16.  \url{http://www.jstatsoft.org/v36/i12/}
+#'
+#' Petris, Petrone, and Campagnoli, Dynamic Linear Models with R, Springer (2009).
+#'     
+#' West and Harrison, Bayesian forecasting and dynamic models (2nd ed.), Springer (1997).
 #'
 setClass("DLM",
          representation(T = "Matrix",
