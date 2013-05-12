@@ -17,15 +17,17 @@ NULL
 #' @return An object of class \code{\linkS4class{DlmSamples}} containing
 #' the sampled states and observations.
 #' @seealso \code{\linkS4class{DlmSamples}}
+#' # sample from a local level with signal to noise ratio of 0.5
+#' mod <- dlm_polynomial(1)
+#' dlm_recursion(mod, n = 100, a1 = matrix(0))
 dlm_recursion <- function(object, n = NULL, a1 = NULL) {
-  m <- length(object@a1)
-  N <- nrow(object@Z)
+  m <- dlm_states(object)
+  N <- dlm_vars(object)
 
   # Use whether n is specified to determine if it is time varying
   if (is.null(n)) {
     istv <- TRUE
-    n <- nrow(object@X)
-    if (n == 0) {
+    if (!(dlm_obs(object))) {
       stop("if n = NULL, then object must have time-varying parameters")
     }
   } else {
@@ -33,13 +35,16 @@ dlm_recursion <- function(object, n = NULL, a1 = NULL) {
   }
 
   # Save
-  a <- matrix(0, m, n + 1)
-  y <- matrix(0, N, n)
+  a <- Matrix(0, m, n + 1, sparse=FALSE)
+  y <- Matrix(0, N, n, sparse=FALSE)
+
+  ## Normal random variates
+  u <- Matrix(rnorm(n * (m + N)), m + N, n)
 
   if (is.null(a1)) {
-    a[ , 1] <- rmvnorm(1, object@a1, object@P1)
+    a[ , 1] <- object@a1 + chol(object@P1) %*% rnorm(m)
   } else {
-    if (length(a1) != object@a1) {
+    if (length(a1) != length(object@a1)) {
       stop(sprintf("length(a1) != %d", m))
     }
     a[ , 1] <- a1
@@ -58,7 +63,7 @@ dlm_recursion <- function(object, n = NULL, a1 = NULL) {
       Phi <- dlm_Phi(object, i)
       Omega <- dlm_Omega(object, i)
     }
-    ay <- as.numeric(rmvnorm(1, delta + Phi %*% a[ , i], Omega))
+    ay <- delta + Phi %*% a[ , i] + chol(Omega) %*% u[ , i]
     a[ , i + 1] <- ay[1:m]
     y[ , i] <- ay[m + 1:N]
   }

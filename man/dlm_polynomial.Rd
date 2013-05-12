@@ -2,8 +2,9 @@
 \alias{dlm_polynomial}
 \title{n-th order polynomial DLM}
 \usage{
-  dlm_polynomial(HH, sigma2 = 1, order = 1, a1 = NULL,
-    P1 = NULL, cc = NULL, dd = NULL, HG = NULL)
+  dlm_polynomial(order = 1, sigma2 = 1,
+    HH = Diagonal(order), a1 = NULL, P1 = NULL, cc = NULL,
+    dd = NULL, HG = NULL)
 }
 \arguments{
   \item{order}{\code{integer} Order of the polynomial
@@ -22,10 +23,10 @@
 }
 \examples{
 # local level model
-dlm_polynomial(matrix(1), 1, order = 1)
+dlm_polynomial(1, sigma2 = 2)
 # local trend model
-dlm_polynomial(diag(1, 2, 2), 1, order = 2)
+dlm_polynomial(2, sigma2 = 2)
 # higer-order polynomial
-dlm_polynomial(diag(1, 5, 5), 1, order = 5)
+dlm_polynomial(order = 5, sigma2 = 3)
 }
 

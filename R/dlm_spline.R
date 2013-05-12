@@ -27,22 +27,23 @@ dlm_spline <- function(q, delta = 1, a1 = NULL, P1 = NULL) {
   if (any(delta < 0)) {
     stop("'delta' must be >= 0")
   }
-  Z <- matrix(c(1, 0), 1, 2)
-  GG <- matrix(1, 1, 1)
+  Z <- Matrix(c(1, 0), 1, 2)
+  GG <- Matrix(1, 1, 1)
   if (length(delta) == 1) {
-    HH <- q * matrix(c(delta^3 / 3, delta^2 / 2,
+    HH <- q * Matrix(c(delta^3 / 3, delta^2 / 2,
                        delta^2 / 2, delta), 2, 2)
-    T <- matrix(c(1, 0, delta, 1), 2, 2)
+    T <- Matrix(c(1, 0, delta, 1), 2, 2)
     X <- NULL
     tv_T <- NULL
     tv_HH <- NULL
   } else {
-    X <- cbind(delta, q * delta, q * delta^2 / 2, q * delta^3 / 3)
-    T <- matrix(c(1, 0, 0, 1), 2, 2)
-    tv_T <- matrix(NA, 2, 2)
-    tv_T[1, 2] <- 1L
-    HH <- matrix(0, 2, 2)
-    tv_HH <- matrix(c(4L, 3L, 3L, 2L), 2, 2)
+    X <- Matrix(cbind(delta, q * delta, q * delta^2 / 2, q * delta^3 / 3))
+    T <- Diagonal(2)
+    tv_T <- matrix(c(1L, 2L, 1L), 1, 3)
+    HH <- Matrix(0, 2, 2)
+    tv_HH <- cbind(rep(c(1L, 2L), each = 2),
+                   rep(c(1L, 2L), 2),
+                   c(2L, 3L, 3L, 4L))
   }
   DLM(T = T, Z = Z, HH = HH, GG = GG, tv_T = tv_T, tv_HH = tv_HH, X = X,
       a1 = NULL, P1 = NULL)

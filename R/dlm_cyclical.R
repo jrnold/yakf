@@ -6,7 +6,7 @@ NULL
 
 # cyclical transition matrix at time i.
 cycl_trans_mat <- function(i, omega) {
-  matrix(c(cos(omega * i), -sin(omega * i), sin(omega * i), cos(omega * i)), 2, 2)
+  Matrix(c(cos(omega * i), -sin(omega * i), sin(omega * i), cos(omega * i)), 2, 2)
 }
 
 
@@ -38,7 +38,7 @@ dlm_cyclical <- function(omega, q = 1, sigma2 = 1, HH = NULL, a1 = NULL, P1 = NU
   if (season && !(s %% 2) && (q == s / 2)) {
     even <- TRUE
     matlist <- c(lapply(seq_len(q - 1), cycl_trans_mat, omega = omega),
-                 matrix(-1, 1, 1))
+                 Matrix(-1, 1, 1))
   } else {
     even <- FALSE
     matlist <- lapply(seq_len(q), cycl_trans_mat, omega = omega)
@@ -46,14 +46,14 @@ dlm_cyclical <- function(omega, q = 1, sigma2 = 1, HH = NULL, a1 = NULL, P1 = NU
   T <- do.call(bdiag, matlist)
   m <- nrow(T) # number of states
   if (even) {
-    Z <- matrix(c(rep(c(1, 0), (m - 1) / 2), 1), 1, m)
+    Z <- Matrix(c(rep(c(1, 0), (m - 1) / 2), 1), 1, m)
   } else {
-    Z <- matrix(c(1, 0), 1, m)
+    Z <- Matrix(c(1, 0), 1, m)
   }
   if (is.null(HH)) {
-   HH <- matrix(0, m, m)
+    HH <- Matrix(0, m, m)
   }
-  GG <- matrix(sigma2, 1, 1)
+  GG <- Matrix(sigma2, 1, 1)
   DLM(T = T, Z = Z, HH = HH, GG = GG, a1 = a1, P1 = P1)
 }
 

@@ -2,10 +2,8 @@
 \alias{dlm_reg}
 \title{Create DLM object for a TVP regression model}
 \usage{
-  dlm_reg(X, GG = 1,
-    HH = if (intercept) diag(1, ncol(X) + 1, ncol(X) + 1) else diag(1, ncol(X), ncol(X)),
-    intercept = TRUE, cc = NULL, dd = NULL, a1 = NULL,
-    P1 = NULL)
+  dlm_reg(X, intercept = TRUE, GG = 1, HH = NULL,
+    cc = NULL, dd = NULL, a1 = NULL, P1 = NULL)
 }
 \arguments{
   \item{X}{\code{matrix} The design matrix.}
@@ -30,5 +28,8 @@
 \examples{
 x <- matrix(rnorm(6), ncol = 2)
 dlm_reg(x)
+}
+\seealso{
+  Other create.dlm: \code{\link{DLM}}
 }
 

@@ -14,20 +14,21 @@ NULL
 #' @return An object of class \code{\linkS4class{DLM}}.
 #' @examples
 #' # local level model
-#' dlm_polynomial(matrix(1), 1, order = 1)
+#' dlm_polynomial(1, sigma2 = 2)
 #' # local trend model
-#' dlm_polynomial(diag(1, 2, 2), 1, order = 2)
+#' dlm_polynomial(2, sigma2 = 2)
 #' # higer-order polynomial
-#' dlm_polynomial(diag(1, 5, 5), 1, order = 5)
-dlm_polynomial <- function(HH, sigma2 = 1, order = 1, a1 = NULL, P1 = NULL, cc = NULL,
-                           dd = NULL, HG = NULL) {
-  T <- matrix(0, order, order)
-  for (i in 1:nrow(T)) {
-    for (j in i:min(i + 1, ncol(T))) {
-      T[i, j] <- 1
-    }
+#' dlm_polynomial(order = 5, sigma2 = 3)
+dlm_polynomial <- function(order = 1, sigma2 = 1, HH = Diagonal(order),
+                           a1 = NULL, P1 = NULL,
+                           cc = NULL, dd = NULL,
+                           HG = NULL) {
+  if (order == 1) {
+    T <- Matrix(1, 1, 1)
+  } else {
+    T <- bandSparse(order, order, k = c(0, 1))
   }
-  Z <- diag(1, 1, order)
-  GG <- matrix(sigma2, 1, 1)
+  Z <- bandSparse(1, order, 0)
+  GG <- Matrix(sigma2, 1, 1)
   DLM(T = T, HH = HH, Z = Z, GG = GG, a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG)
 }

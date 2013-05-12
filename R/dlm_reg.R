@@ -2,10 +2,6 @@
 #' @export dlm_reg
 NULL
 
-eye <- function(m, n = m) {
-  diag(1, m, n)
-}
-
 #' @title Create DLM object for a TVP regression model
 #'
 #' @description This function creates a \code{"DLM"} object
@@ -23,19 +19,19 @@ eye <- function(m, n = m) {
 #' @examples
 #' x <- matrix(rnorm(6), ncol = 2)
 #' dlm_reg(x)
-dlm_reg <- function(X, GG = 1,
-                    HH = if(intercept) diag(1, ncol(X) + 1, ncol(X) + 1)
-                    else diag(1, ncol(X), ncol(X)),
-                    intercept = TRUE, cc = NULL, dd = NULL,
+dlm_reg <- function(X, intercept = TRUE,
+                    GG = 1, HH = NULL,
+                    cc = NULL, dd = NULL,
                     a1 = NULL, P1 = NULL) {
   if (intercept) {
-    Z <- matrix(1, 1, ncol(X) + 1)
-    tv_Z <- matrix(c(NA_integer_, seq_len(ncol(X))), 1)
+    Z <- Matrix(1, 1, ncol(X) + 1)
+    tv_Z <- cbind(rep(1, ncol(X)), 2:(ncol(X) + 1), 1:ncol(X))
   } else {
-    Z <- matrix(1, 1, ncol(X))
-    tv_Z <- matrix(seq_len(ncol(X)), 1, ncol(X))
+    Z <- Matrix(1, 1, ncol(X))
+    tv_Z <- cbind(rep(1, ncol(X)), 1:ncol(X), 1:ncol(X))
   }
-  T <- eye(ncol(Z))
+  T <- Diagonal(ncol(Z))
+  HH <- Diagonal(ncol(Z))
   DLM(T = T, Z = Z, HH = HH, GG = GG, cc = cc, dd = dd,
       a1 = a1, P1 = P1, X = X, tv_Z = tv_Z)
 }

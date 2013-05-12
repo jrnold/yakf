@@ -21,6 +21,6 @@
 dlm_arma(c(0.6, 0.2), -0.2, sqrt(0.9))
 }
 \seealso{
-  Other create-DLM: \code{\link{dlm_spline}}
+  Other create.DLM: \code{\link{dlm_spline}}
 }
 
