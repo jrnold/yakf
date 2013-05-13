@@ -1,4 +1,3 @@
-#' @include yakf-package.R
 #' @include DLM-class.R
 #' @export dlm_T dlm_Z dlm_HH dlm_GG dlm_HG dlm_cc dlm_dd
 #' @export dlm_Sigma dlm_Omega dlm_delta dlm_Phi
@@ -23,7 +22,8 @@ get_tv_slot <- function(object, slotname, i) {
 
 #' @name dlm-accessors
 #' @rdname dlm-accessors
-#' @aliases dlm_cc dlm_dd dlm_T dlm_Z dlm_HH dlm_HG dlm_Omega dlm_Phi dlm_Sigma dlm_delta
+#' @aliases dlm_cc dlm_dd dlm_T dlm_Z dlm_HH dlm_GG
+#' @aliases dlm_HG dlm_Omega dlm_Phi dlm_Sigma dlm_delta
 #' @aliases dlm_states dlm_obs dlm_vars
 #' @title Access data from DLM objects
 #'

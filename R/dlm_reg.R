@@ -1,4 +1,4 @@
-#' @include DLM.R
+#' @include DLM-class.R
 #' @export dlm_reg
 NULL
 
@@ -15,7 +15,7 @@ NULL
 #' otherwise of dimension \code{ncol(X)}.
 #' @param intercept \code{logical} Include an intercept?
 #' @return An object of class \code{DLM}
-#' @family create-dlm
+#' @family create-DLM
 #' @examples
 #' x <- matrix(rnorm(6), ncol = 2)
 #' dlm_reg(x)

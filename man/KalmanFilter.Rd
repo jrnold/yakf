@@ -1,10 +1,8 @@
 \docType{class}
 \name{KalmanFilter}
 \alias{KalmanFilter}
+\alias{KalmanFilter-class}
 \title{Kalman filter results}
-\usage{
-  KalmanFilter(...)
-}
 \description{
   Class containing results from a Kalman filter, as
   produced by (\code{\link{kalman_filter}}).
@@ -16,7 +14,14 @@
   containing the Kalman gain for each observation.}
   \item{\code{Finv}}{\code{"list"} of \code{"Matrix"}
   obects, each of dimension N x N containing the
-  \eqn{F^{-1}} matrices.} }
+  \eqn{F^{-1}} matrices.} \item{\code{a}}{\code{"list"} of
+  \code{"Matrix"} obects, each of dimension m x 1
+  containing the mean of predicted states.}
+  \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects,
+  each of dimension m x m containing the covariance matrix
+  for the predicted states.}
+  \item{\code{loglik}}{\code{"numeric"} vector of the
+  log-likelihood for each observation.} }
 }
 \seealso{
   \code{\link{kalman_filter}}, which returns objects of

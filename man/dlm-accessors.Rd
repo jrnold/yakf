@@ -1,5 +1,6 @@
 \name{dlm-accessors}
 \alias{dlm-accessors}
+\alias{dlm_GG}
 \alias{dlm_HG}
 \alias{dlm_HH}
 \alias{dlm_Omega}

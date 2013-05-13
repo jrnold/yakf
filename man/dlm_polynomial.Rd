@@ -28,4 +28,9 @@ dlm_polynomial(2, GG = 2)
 # higer-order polynomial
 dlm_polynomial(order = 5, GG = 3)
 }
+\seealso{
+  Other create-DLM: \code{\link{dlm_arma}},
+  \code{\link{dlm_recursion}}, \code{\link{dlm_reg}},
+  \code{\link{dlm_seasonal}}, \code{\link{dlm_spline}}
+}
 

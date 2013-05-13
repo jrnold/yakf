@@ -126,5 +126,23 @@ This is not the most intelligent way to handle $c$ and $G G'$, but unlike other 
 
 This operation is implemented in the package as the + method for two DLM objects.
 
+Loglikelihood
+
+Given the results of the Kalman filter ($F_{t}^{-1}$, $v_{t}$), the log-likelihood can be calculated 
+\begin{align}
+  \label{eq:8}
+  \ln L(\varphi | Y_{n}) &=  \sum_{t=1}^{n} \ln f(y_{t} | Y_{t-1}; \varphi) \\
+  &= - \frac{n N}{2} \ln(2 \pi) - \frac{1}{2} \sum_{t=1}^{n}
+  \left(
+    \ln |F_{t} | + v_{t}' F_{t}^{-1} v_{t}
+  \right)
+\end{align}
+where $|F_{t}| = \frac{1}{|F^{-1}_{t}|}$.
+
+
+\begin{equation}
+  \label{eq:7}
+  
+\end{equation}
 
 \end{document}

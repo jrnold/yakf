@@ -10,15 +10,13 @@ Description: Functions and classes for dynamic linear models and
 Depends:
     methods
 Imports:
-    Matrix,
-    mvtnorm
+    Matrix
 Suggests:
     testthat,
     roxygen2
 Collate:
     'yakf-package.R'
     'DLM-class.R'
-    'DLM.R'
     'dlm_polynomial.R'
     'DlmSamples-class.R'
     'dlm_recursion.R'

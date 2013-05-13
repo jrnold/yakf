@@ -1,8 +1,8 @@
-#' @include DLM.R
+#' @include DLM-class.R
 #' @export dlm_spline
 NULL
 
-#' Create DLM representation of Cubic Spline Smoother
+#' Create DLM of a cubic spline smoother
 #'
 #' @param q Signal to noise ratio (smoothness penalty).
 #' @param delta distance between points
@@ -16,7 +16,7 @@ NULL
 #' dlm_spline(0.2)
 #' # cubic spline with non-equally spaced observations
 #' dlm_spline(0.2, diff(c(1, 2, 3, 5, 9, 12, 17, 20, 23, 25)))
-dlm_spline <- function(q, delta = 1, a1 = NULL, P1 = NULL) {
+dlm_spline <- function(q, delta = 1, a1 = NULL, P1 = NULL, cc = NULL, dd = NULL) {
   if (length(q) > 1) {
     q <- q[1]
     warning("only first element of 'q' used.")
@@ -45,6 +45,7 @@ dlm_spline <- function(q, delta = 1, a1 = NULL, P1 = NULL) {
                    rep(c(1L, 2L), 2),
                    c(2L, 3L, 3L, 4L))
   }
-  DLM(T = T, Z = Z, HH = HH, GG = GG, tv_T = tv_T, tv_HH = tv_HH, X = X,
-      a1 = NULL, P1 = NULL)
+  DLM(T = T, Z = Z, HH = HH, GG = GG,
+      tv_T = tv_T, tv_HH = tv_HH, X = X,
+      cc = cc, dd = dd, a1 = NULL, P1 = NULL)
 }

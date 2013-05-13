@@ -1,5 +1,4 @@
-#' @include yakf-package.R
-#' @include DLM.R
+#' @include DLM-class.R
 #' @include utilities.R
 #' @export dlm_cyclical dlm_cyclical_tau dlm_cyclical_season
 NULL
@@ -23,8 +22,10 @@ cycl_trans_mat <- function(i, omega) {
 #' @param season \code{logical} If \code{TRUE}, then the period is assumed to be an integer. This results in a special
 #' case if the period is even and \code{q = s / 2}.
 #' @param ... Arguments passed to \code{dlm_cyclical}.
-#' @return An object of class \code{\linkS4class{DLM}}.
-dlm_cyclical <- function(omega, q = 1, GG = 1, HH = NULL, a1 = NULL, P1 = NULL, season = FALSE) {
+#' @return An object of class \code{\linkS4class{DLM}}
+#' @family create-DLM.
+dlm_cyclical <- function(omega, q = 1, GG = 1, HH = NULL, a1 = NULL, P1 = NULL,
+                         cc = cc, dd = dd, season = FALSE) {
   ## Checks
   q <- as.integer(len_one_arg(q, "q"))
   GG <- len_one_arg(GG)
@@ -53,7 +54,7 @@ dlm_cyclical <- function(omega, q = 1, GG = 1, HH = NULL, a1 = NULL, P1 = NULL, 
   if (is.null(HH)) {
     HH <- Matrix(0, m, m)
   }
-  DLM(T = T, Z = Z, HH = HH, GG = GG, a1 = a1, P1 = P1)
+  DLM(T = T, Z = Z, HH = HH, GG = GG, a1 = a1, P1 = P1, cc = cc, dd = dd)
 }
 
 #' @rdname dlm_cyclical

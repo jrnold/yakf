@@ -1,5 +1,4 @@
-#" @include yakf-package.R
-#' @include DLM.R
+#' @include DLM-class.R
 #' @export dlm_arma
 NULL
 
@@ -24,8 +23,10 @@ lengthen <- function(x, len = length(x), fill=0) {
 #' 
 #' @family create-DLM
 #' @examples
+#' # an ARMA(2, 1)
 #' dlm_arma(c(0.6, 0.2), -0.2, sqrt(0.9))
-dlm_arma <- function(ar = 1, ma = 0, sigma = 1, GG = 0, a1 = NULL, P1 = NULL) {
+dlm_arma <- function(ar = 1, ma = 0, sigma = 1, GG = 0, a1 = NULL, P1 = NULL,
+                     cc = NULL, dd = NULL) {
   p <- length(ar)
   q <- length(ma)
   m <- max(p, q + 1)
@@ -42,7 +43,6 @@ dlm_arma <- function(ar = 1, ma = 0, sigma = 1, GG = 0, a1 = NULL, P1 = NULL) {
     V <- solve(diag(1, nrow(TT), ncol(TT)) - TT, as.numeric(HH))
     P1 <- Matrix(as.numeric(V), m, m)
   }
-  DLM(T = T, Z = Z, HH = HH , GG = GG,
-      cc = NULL, dd = NULL, HG = NULL,
+  DLM(T = T, Z = Z, HH = HH , GG = GG, cc = NULL, dd = NULL, HG = NULL,
       a1 = a1, P1 = P1)
 }

@@ -1,4 +1,3 @@
-#' @include yakf-package.R
 #' @include DlmSamples-class.R
 #' @export dlm_recursion
 NULL
@@ -6,7 +5,7 @@ NULL
 #' Generate Samples from a DLM
 #'
 #' Generate sample states and observations from a specified
-#' \code{\linkS4class{"DLM"}} object.
+#' \code{"\linkS4class{DLM}"} object.
 #'
 #' @param object \code{DLM}
 #' @param n \code{numeric} Number of samples to draw. If NULL, then
@@ -16,6 +15,7 @@ NULL
 #' in \code{object}.
 #' @return An object of class \code{\linkS4class{DlmSamples}} containing
 #' the sampled states and observations.
+#' @family create-DLM
 #' @seealso \code{\linkS4class{DlmSamples}}
 #' # sample from a local level with signal to noise ratio of 0.5
 #' mod <- dlm_polynomial(1)

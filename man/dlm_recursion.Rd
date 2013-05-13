@@ -21,12 +21,16 @@
 }
 \description{
   Generate sample states and observations from a specified
-  \code{\linkS4class{"DLM"}} object.
+  \code{"\linkS4class{DLM}"} object.
 }
 \seealso{
   \code{\linkS4class{DlmSamples}} # sample from a local
   level with signal to noise ratio of 0.5 mod <-
   dlm_polynomial(1) dlm_recursion(mod, n = 100, a1 =
   matrix(0))
+
+  Other create-DLM: \code{\link{dlm_arma}},
+  \code{\link{dlm_polynomial}}, \code{\link{dlm_reg}},
+  \code{\link{dlm_seasonal}}, \code{\link{dlm_spline}}
 }
 

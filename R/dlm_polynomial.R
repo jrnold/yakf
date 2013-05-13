@@ -1,5 +1,4 @@
-#' @include yakf-package.R
-#' @include DLM.R
+#' @include DLM-class.R
 #' @export dlm_polynomial
 NULL
 
@@ -12,6 +11,7 @@ NULL
 #' \code{order = 2} is a local trend model.
 #' @param GG \code{numeric} Observation variance, \eqn{G G' = \sigma^2}.
 #' @return An object of class \code{\linkS4class{DLM}}.
+#' @family create-DLM
 #' @examples
 #' # local level model
 #' dlm_polynomial(1, GG = 2)

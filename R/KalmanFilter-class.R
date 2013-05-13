@@ -1,8 +1,8 @@
-#' @include yakf-package.R
 #' @exportClass KalmanFilter
 NULL
 
 #' @docType class
+#' @aliases KalmanFilter-class
 #' @title Kalman filter results
 #'
 #' @description Class containing results from a
@@ -16,44 +16,49 @@ NULL
 #' N x m containing the Kalman gain for each observation.}
 #' \item{\code{Finv}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
 #' N x N containing the \eqn{F^{-1}} matrices.}
+#' \item{\code{a}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x 1 containing the mean of predicted states.}
+#' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x m containing the covariance matrix for the predicted states.}
+#' \item{\code{loglik}}{\code{"numeric"} vector of the log-likelihood for
+#' each observation.}
 #' }
+#' 
 #' @seealso \code{\link{kalman_filter}}, which returns objects of this class.
-KalmanFilter <-
-  setClass("KalmanFilter",
-           representation(v = "Matrix",
-                          K = "list",
-                          Finv = "list"))
+setClass("KalmanFilter",
+         representation(v = "Matrix",
+                        K = "list",
+                        Finv = "list",
+                        a = "list",
+                        P = "list",
+                        loglik = "numeric"))
 
 validity.KalmanFilter <- function(object) {
-  N <- nrow(object@v)
-  n <- ncol(object@v)
-  if (length(object@K) != n) {
-    return("ncol(K) != ncol(v)")
-  }
-  if (length(object@Finv) != n) {
-    return("length(Finv) != ncol(v)")
-  }
-  # Check K
-  if (!all(sapply(object@K, is, class2 = "Matrix"))) {
-    return("class(x) != 'Matrix' for some element in K")
-  }
-  if (!all(sapply(object@K, function(x) ncol(x) == N))) {
-    return("nrow(x) != nrow(v) for some element in K")
-  }
-  m <- nrow(object@K[[1]])
-  if (!all(sapply(object@K, function(x) nrow(x) == m))) {
-    return("Elements in K do not have equal rows")
-  }
+  N <- nrow(object@v) # variables
+  n <- ncol(object@v) # obs
+  m <- nrow(object@K[[1]]) # states
 
-  # Check Finv
-  if (!all(sapply(object@Finv, nrow, class2 = "Matrix"))) {
-    return("class(x) != 'Matrix' for some element in Finv")
+  for (i in c("K", "Finv", "loglik")) {
+    if (length(slot(object, i)) != n) {
+      return(sprintf("ncol(%s) != %d = ncol(v)", i, n))
+    }
   }
-  if (!all(sapply(object@Finv, function(x) nrow(x) == N))) {
-    return("nrow(x) != 'N' for some element in Finv")
+  for (i in c("a", "P")) {
+    if (length(slot(object, i)) != (n + 1L)) {
+      return(sprintf("ncol(%s) != %d = ncol(v) + 1", i, n + 1L))
+    }
   }
-  if (!all(sapply(object@Finv, function(x) ncol(x) == N))) {
-    return("ncol(x) != 'N' for some element in Finv")
+  
+  invalid <-
+    list(K = function(x) !(is(x, "Matrix") && ncol(x) == n && nrow(x) == m),
+         Finv = function(x) !(is(x, "Matrix") && ncol(x) == n && nrow(x) == n),
+         a = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
+         P =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m))
+
+  for (i in names(invalid)) {
+    if (any(sapply(slot(object, i), invalid[[i]]))) {
+      return("invalid elements in the list in %s slot", sQuote(i))
+    }
   }
   TRUE
 }

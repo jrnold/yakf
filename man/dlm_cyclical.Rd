@@ -5,7 +5,7 @@
 \title{Create Fourier representation of a cyclical DLM}
 \usage{
   dlm_cyclical(omega, q = 1, GG = 1, HH = NULL, a1 = NULL,
-    P1 = NULL, season = FALSE)
+    P1 = NULL, cc = cc, dd = dd, season = FALSE)
 
   dlm_cyclical_tau(tau, ...)
 
@@ -33,7 +33,7 @@
   \eqn{\omega = \frac{2 \pi}{s}}{omega = 2 p / s}.}
 }
 \value{
-  An object of class \code{\linkS4class{DLM}}.
+  An object of class \code{\linkS4class{DLM}}
 }
 \description{
   This function creates a \code{\linkS4class{DLM}} object
