@@ -30,3 +30,5 @@ Collate:
     'dlm_cyclical.R'
     'KalmanFilter-class.R'
     'kalman_filter.R'
+    'KalmanFilterSeq-class.R'
+    'kalman_filter_seq.R'

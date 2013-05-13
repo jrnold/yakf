@@ -109,8 +109,7 @@ kalman_filter <- function(object, y, likeonly = FALSE) {
       ## update
       v <- t(y[i, ]) - yhat
       a <- abar + K %*% v
-      P <- Pbar - K %*% t(M)
-      P <- 0.5 * (P + t(P)) # symmetrize
+      P <- symmetrize(Pbar - K %*% t(M))
 
       if (n_obs < N) {
         v_tmp <- rep(NA_real_, N)

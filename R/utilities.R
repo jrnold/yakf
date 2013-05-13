@@ -13,3 +13,6 @@ check_positive <- function(x, name, include_zero = FALSE) {
     stop(sprintf("%s must be > 0", name))
   }
 }
+
+# Return a symmetric matrix
+symmetrize <- function(x) 0.5 * (x + t(x))

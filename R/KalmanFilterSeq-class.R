@@ -1,0 +1,73 @@
+#' @exportClass KalmanFilter
+NULL
+
+#' @docType class
+#' @aliases KalmanFilterSeq-class
+#' @title Kalman filter (sequential) results
+#'
+#' @description Class containing results from a
+#' sequential Kalman filter, as produced by (\code{\link{kalman_filter_seq}}).
+#'
+#' @section Slots:
+#'
+#' \describe{
+#' \item{\code{v}}{\code{"Matrix"} of size N x n. The forecast errors.}
+#' \item{\code{K}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' N x m containing the Kalman gain for each observation.}
+#' \item{\code{Finv}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' N x N containing the \eqn{F^{-1}} matrices.}
+#' \item{\code{a}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x 1 containing the mean of predicted states.}
+#' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x m containing the covariance matrix for the predicted states.}
+#' \item{\code{a}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x 1 containing the mean of filtered states.}
+#' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x m containing the covariance matrix for the filtered states.}
+#' \item{\code{loglik}}{\code{"Matrix"} of the log-likelihood for
+#' each observation.}
+#' }
+#' 
+#' @seealso \code{\link{kalman_filter}}, which returns objects of this class.
+setClass("KalmanFilterSeq",
+         representation(v = "Matrix",
+                        K = "list",
+                        Finv = "list",
+                        a = "list",
+                        P = "list",
+                        a_filter = "list",
+                        P_filter = "list",
+                        loglik = "Matrix"))
+
+validity.KalmanFilter <- function(object) {
+  N <- nrow(object@v) # variables
+  n <- ncol(object@v) # obs
+  m <- nrow(object@K[[1]]) # states
+
+  for (i in c("K", "Finv", "loglik", "a_filter", "P_filter")) {
+    if (length(slot(object, i)) != n) {
+      return(sprintf("ncol(%s) != %d = ncol(v)", i, n))
+    }
+  }
+  for (i in c("a", "P")) {
+    if (length(slot(object, i)) != (n + 1L)) {
+      return(sprintf("ncol(%s) != %d = ncol(v) + 1", i, n + 1L))
+    }
+  }
+  
+  invalid <-
+    list(K = function(x) !(is(x, "Matrix") && ncol(x) == n && nrow(x) == m),
+         Finv = function(x) !(is(x, "Matrix") && ncol(x) == n && nrow(x) == n),
+         a = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
+         P =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m),
+         a_filter = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
+         P_filter =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m),
+         )
+
+  for (i in names(invalid)) {
+    if (any(sapply(slot(object, i), invalid[[i]]))) {
+      return("invalid elements in the list in %s slot", sQuote(i))
+    }
+  }
+  TRUE
+}
