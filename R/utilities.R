@@ -14,5 +14,7 @@ check_positive <- function(x, name, include_zero = FALSE) {
   }
 }
 
-# Return a symmetric matrix
-symmetrize <- function(x) 0.5 * (x + t(x))
+
+crosssum <- function(x) x + t(x)
+
+symmetrize <- function(x) 0.5 * crosssum(x)
