@@ -1,3 +1,5 @@
+setClassUnion("ListOrNull", c("list", "NULL"))
+
 len_one_arg <- function(x, name) {
   if (length(x) > 1) {
     x <- x[1]

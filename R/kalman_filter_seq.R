@@ -75,6 +75,7 @@ kalman_filter_seq <- function(object, y, likeonly = FALSE) {
   }
   for (i in 1:n) {
     T <- dlm_T(object, i)
+    dd <- dlm_dd(object, i)
     HH <- dlm_HH(object, i)
 
     if (! likeonly) {
@@ -87,11 +88,12 @@ kalman_filter_seq <- function(object, y, likeonly = FALSE) {
       yij <- y[i, j]
       if (!is.na(yij)) {
         Z <- dlm_Z(object, i)[j, ]
+        cc <- dlm_cc(object, i)[j, ]
         sigma2 <- dlm_GG(object, i)[j, j]
         
         ####### Filtering
         # v_{t,i} = y_{t,i} - Z_{t,i} a_{t,i}
-        v <- yij - Z %*% a
+        v <- yij - cc - Z %*% a
         # M_{t,i} = P_{t,i} Z_{t,i}'
         M <- P %*% t(Z)
         # F_{t,i} = Z_{t,i} M_{t,i} + \sigma^2_{t,i}
@@ -121,7 +123,7 @@ kalman_filter_seq <- function(object, y, likeonly = FALSE) {
     
     ## Prediction
     ## Predicted states
-    a <- T %*% a
+    a <- dd + T %*% a
     P <- symmetrize(T %*% P %*% t(T) + HH)
 
     if (! likeonly) {

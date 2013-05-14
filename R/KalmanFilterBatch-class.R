@@ -1,14 +1,14 @@
 #' @include utilities.R
 #' @include KalmanFilter-class.R
-#' @exportClass KalmanFilterSeq
+#' @exportClass KalmanFilterBatch
 NULL
 
 #' @docType class
-#' @aliases KalmanFilterSeq-class
-#' @title Kalman filter (sequential) results
+#' @aliases KalmanFilterBatch-class
+#' @title Kalman filter results
 #'
 #' @description Class containing results from a
-#' sequential Kalman filter, as produced by (\code{\link{kalman_filter_seq}}).
+#' Kalman filter, as produced by (\code{\link{kalman_filter}}).
 #'
 #' @section Slots:
 #'
@@ -21,34 +21,33 @@ NULL
 #' \item{\code{a}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
 #' m x 1 containing the mean of predicted states.}
 #' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' \item{\code{a_filter}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' m x 1 containing the mean of predicted states.}
+#' \item{\code{P_filter}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
 #' m x m containing the covariance matrix for the predicted states.}
-#' \item{\code{a}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
-#' m x 1 containing the mean of filtered states.}
-#' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
-#' m x m containing the covariance matrix for the filtered states.}
-#' \item{\code{loglik}}{\code{"Matrix"} of the log-likelihood for
+#' \item{\code{loglik}}{\code{"numeric"} vector of the log-likelihood for
 #' each observation.}
 #' }
 #' 
-#' @seealso \code{\link{kalman_filter_esq}}, which returns objects of this class. \code{\linkS4class{KalmanFilterBatch}}
-setClass("KalmanFilterSeq",
+#' @seealso \code{\link{kalman_filter}}, which returns objects of this class. \code{\linkS4class{KalmanFilterSeq}}
+setClass("KalmanFilterBatch",
          representation(v = "Matrix",
                         K = "list",
                         Finv = "list",
                         a = "list",
                         P = "list",
-                        a_filter = "list",
-                        P_filter = "list",
-                        loglik = "Matrix"),
+                        a_filter = "ListOrNULL",
+                        P_filter = "ListOrNULL",
+                        loglik = "numeric"),
          contains = "KalmanFilter")
 
-validity.KalmanFilter <- function(object) {
+validity.KalmanFilterBatch <- function(object) {
   N <- nrow(object@v) # variables
   n <- ncol(object@v) # obs
   m <- nrow(object@K[[1]]) # states
 
   for (i in c("K", "Finv", "loglik", "a_filter", "P_filter")) {
-    if (length(slot(object, i)) != n) {
+    if (!is.null(slot(object, i)) && length(slot(object, i)) != n) {
       return(sprintf("ncol(%s) != %d = ncol(v)", i, n))
     }
   }
@@ -64,8 +63,8 @@ validity.KalmanFilter <- function(object) {
          a = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
          P =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m),
          a_filter = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
-         P_filter =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m),
-         )
+         P_filter =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m))
+
 
   for (i in names(invalid)) {
     if (any(sapply(slot(object, i), invalid[[i]]))) {
