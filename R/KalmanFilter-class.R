@@ -2,9 +2,11 @@
 #' 
 NULL
 
-#' Kalman Filter Class
+#' @docType class
+#' @aliases KalmanFilter-class
+#' @title Kalman Filter Class
 #'
-#' A virtual class containing \code{\linkS4class{KalmanFilterBatch}}
+#' @description A virtual class containing \code{\linkS4class{KalmanFilterBatch}}
 #' and \code{\linkS4class{KalmanFilterSeq}}.
 setClass("KalmanFilter")
 

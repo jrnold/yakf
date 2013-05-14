@@ -135,7 +135,7 @@ kalman_filter <- function(object, y, likeonly = FALSE) {
   }
 
   if (! likeonly) {
-    new("KalmanFilter",
+    new("KalmanFilterBatch",
         v = v_save,  # N
         Finv = Finv_save, # N^2
         K = K_save, # N m

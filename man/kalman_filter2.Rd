@@ -1,8 +1,8 @@
-\name{kalman_filter_seq}
-\alias{kalman_filter_seq}
-\title{Kalman Filter (Sequential)}
+\name{kalman_filter2}
+\alias{kalman_filter2}
+\title{Kalman Filter (Batch)}
 \usage{
-  kalman_filter_seq(object, y, likeonly = FALSE)
+  kalman_filter2(object, y, likeonly = FALSE)
 }
 \arguments{
   \item{object}{A \code{DLM} object}
@@ -22,20 +22,20 @@
   log-likelihood.
 }
 \description{
-  This function runs a Kalman filter, updating with each
-  observation.
+  Runs a Kalman Filter, updating the filter using all
+  observations for a given time at once.
 }
 \examples{
 # A local level model of the nile data
 data(Nile)
 mod <- dlm_polynomial(order = 1, HH = 1469, GG = 15099)
 # predicted states
-filter1 <- kalman_filter_seq(mod, as.numeric(Nile))
+filter1 <- kalman_filter(mod, as.numeric(Nile))
 # only the log-likelihood
-kalman_filter_seq(mod, as.numeric(Nile), likeonly = TRUE)
+kalman_filter(mod, as.numeric(Nile), likeonly = TRUE)
 # The same model with missing values
 nilem <- as.numeric(Nile)
 nilem[c(2, 10, 45)] <- NA
-filter2 <- kalman_filter_seq(mod, nilem)
+filter2 <- kalman_filter(mod, nilem)
 }
 

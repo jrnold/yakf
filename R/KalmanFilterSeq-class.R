@@ -22,15 +22,15 @@ NULL
 #' m x 1 containing the mean of predicted states.}
 #' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
 #' m x m containing the covariance matrix for the predicted states.}
-#' \item{\code{a}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' \item{\code{a_filter}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
 #' m x 1 containing the mean of filtered states.}
-#' \item{\code{P}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
+#' \item{\code{P_filter}}{\code{"list"} of \code{"Matrix"} obects, each of dimension
 #' m x m containing the covariance matrix for the filtered states.}
 #' \item{\code{loglik}}{\code{"Matrix"} of the log-likelihood for
 #' each observation.}
 #' }
 #' 
-#' @seealso \code{\link{kalman_filter_esq}}, which returns objects of this class. \code{\linkS4class{KalmanFilterBatch}}
+#' @seealso \code{\link{kalman_filter_seq}}, which returns objects of this class. \code{\linkS4class{KalmanFilterBatch}}
 setClass("KalmanFilterSeq",
          representation(v = "Matrix",
                         K = "list",
@@ -42,7 +42,7 @@ setClass("KalmanFilterSeq",
                         loglik = "Matrix"),
          contains = "KalmanFilter")
 
-validity.KalmanFilter <- function(object) {
+validity.KalmanFilterSeq <- function(object) {
   N <- nrow(object@v) # variables
   n <- ncol(object@v) # obs
   m <- nrow(object@K[[1]]) # states
@@ -64,13 +64,15 @@ validity.KalmanFilter <- function(object) {
          a = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
          P =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m),
          a_filter = function(x) !(is(x, "Matrix") && ncol(x) == 1L && nrow(x) == m),
-         P_filter =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m),
+         P_filter =function(x) (is(x, "Matrix") && ncol(x) == m && nrow(x) == m)
          )
 
   for (i in names(invalid)) {
     if (any(sapply(slot(object, i), invalid[[i]]))) {
-      return("invalid elements in the list in %s slot", sQuote(i))
+      return(sprintf("invalid elements in the list in %s slot", sQuote(i)))
     }
   }
   TRUE
 }
+
+setValidity("KalmanFilterSeq", validity.KalmanFilterSeq)

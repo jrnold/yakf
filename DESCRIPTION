@@ -32,3 +32,6 @@ Collate:
     'kalman_filter.R'
     'KalmanFilterSeq-class.R'
     'kalman_filter_seq.R'
+    'KalmanFilterBatch-class.R'
+    'kalman_filter2.R'
+    'kalman_smooth_seq.R'

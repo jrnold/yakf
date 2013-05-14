@@ -76,11 +76,11 @@ kalman_filter2 <- function(object, y, likeonly = FALSE) {
   for (i in 1:n) {
     yi <- y[i, ]
     cc <- dlm_cc(object, i)
-    cd <- dlm_dd(object, i)
-    T <- dlm_TT(object, i)
-    Z <- dlm_TT(object, i)
-    HH <- dlm_TT(object, i)
-    GG <- dlm_TT(object, i)
+    dd <- dlm_dd(object, i)
+    T <- dlm_T(object, i)
+    Z <- dlm_Z(object, i)
+    HH <- dlm_HH(object, i)
+    GG <- dlm_GG(object, i)
 
     is_obs <- ! is.na(yi)
     n_obs <- sum(is_obs)
@@ -103,6 +103,7 @@ kalman_filter2 <- function(object, y, likeonly = FALSE) {
       v <- yi - cc - Z %*% a;
       F <- Z %*% P %*% Z + HH
       Finv <- solve(F)
+      M <- P %*% Z
       a <- a + M %*% Finv %*% v
       P <- symmetrize(P - M %*% Finv %*% t(M))
       if (! likeonly) {
