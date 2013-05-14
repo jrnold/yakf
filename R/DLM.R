@@ -96,7 +96,7 @@ add.DLM <- function(e1, e2) {
   # initial
   a <- c(e1@a1, e2@a1)
   P1 <- bdiag(e1@P1, e2@P1)
-  # TODO: Time varying parameters
+  # time varying stuff
   X <- cbind(e1@X, e2@X)
   ## offset indices from e2.
   xoffset <- ncol(e1@X)
@@ -106,6 +106,8 @@ add.DLM <- function(e1, e2) {
   tv_GG <- bdiag(e1@tv_GG, e2@tv_GG + xoffset, offdiag = NA_integer_)
   tv_HG <- bdiag(e1@tv_HG, e2@tv_HG + xoffset, offdiag = NA_integer_)
   ## cc requires special attention
+  ## since this changes the values of columns in X, it can cause
+  ## problems if multiple parameters are mapped to the same column in X.
   tv_cc <- rep(NA_integer_, length(e1@tv_cc))
   for (i in seq_along(e1@tv_cc)) {
     if (!is.na(e1@tv_cc[i]) & !is.na(e1@tv_cc[i])) {
