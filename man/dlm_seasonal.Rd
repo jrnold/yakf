@@ -21,7 +21,7 @@
 dlm_seasonal(4)
 }
 \seealso{
-  Other create-DLM: \code{\link{dlm_arma}},
+  Other create-DLM: \code{\link{dlm_arima}},
   \code{\link{dlm_polynomial}},
   \code{\link{dlm_recursion}}, \code{\link{dlm_reg}},
   \code{\link{dlm_spline}}

@@ -29,7 +29,7 @@
   dlm_polynomial(1) dlm_recursion(mod, n = 100, a1 =
   matrix(0))
 
-  Other create-DLM: \code{\link{dlm_arma}},
+  Other create-DLM: \code{\link{dlm_arima}},
   \code{\link{dlm_polynomial}}, \code{\link{dlm_reg}},
   \code{\link{dlm_seasonal}}, \code{\link{dlm_spline}}
 }
