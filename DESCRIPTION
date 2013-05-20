@@ -12,6 +12,7 @@ Depends:
 Imports:
     Matrix
 Suggests:
+    knitr,
     testthat,
     roxygen2
 Collate:
@@ -35,3 +36,4 @@ Collate:
     'KalmanFilterBatch-class.R'
     'kalman_filter2.R'
     'kalman_smooth_seq.R'
+VignetteBuilder: knitr
