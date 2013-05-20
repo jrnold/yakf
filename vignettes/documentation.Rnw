@@ -1,0 +1,24 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\begin{document}
+
+The state space notation used here is the State Space Form used by
+SsfPack:
+
+\begin{align}
+  \label{eq:2}
+   y_t & = c_t + Z_t \alpha_t + \eta_{t} \\
+   \alpha_{t + 1} & = d_t + T_t \alpha_t + \epsilon_t \\
+   \alpha_1 & \sim \mathcal{N}(a, P) \\
+   \epsilon_t & \sim \mathcal{N}(0, H_{t}) \\
+   \eta_t & \sim \mathcal{N}(0, H_{t})
+\end{align}
+where $\mathcal{N}(\mu, \Psi)$ is the multivariate normal distribution with mean $\mu$ and variance matrix $\Psi$.
+
+The following state space representation is used.
+
+\end{document}
