@@ -42,23 +42,23 @@ dimlen <- function(x) {
 #' also called state-space model.
 #'
 #' @param T \code{Matrix} of dimension m x m.
-#' @param Z \code{Matrix} of dimension N x m.
-#' @param HH \code{Matrix} of dimension m x m. 
-#' @param GG \code{Matrix} of dimension N x N. 
+#' @param Z \code{Matrix} of dimension p x m.
+#' @param H \code{Matrix} of dimension m x m. 
+#' @param R \code{Matrix} of dimension p x r.
+#' @param Q \code{Matrix} of dimension r x r.
 #' @param P1 \code{Matrix} of dimension m x m. If \code{NULL}, then
 #' a diffuse diagonal Matrix is used. The diagonal of this Matrix is set to 10^6 times the
 #' maximum of 1 or values along the diagonal of \code{HH} and \code{GG}.
 #' @param a1 \code{Matrix} of length m. If \code{NULL}, then set to a 0 vector.
 #' @param dd \code{Matrix} of dimension N. If \code{NULL}, then set to a 0 vector.
 #' @param cc \code{Matrix} of dimension m. If \code{NULL}, then set to a 0 vector.
-#' @param HG \code{Matrix} of dimension m x N. If \code{NULL}, then it set to a 0 matrix.
 #' @param tv_T \code{matrix} Indices of time-varying elements in \code{T}. See details.
 #' @param tv_Z \code{matrix} Indices of time-varying elements in \code{Z}. See details.
-#' @param tv_HH \code{matrix} Indices of time-varying elements in \code{HH}. See details.
-#' @param tv_GG \code{matrix} Indices of time-varying elements in \code{GG}. See details. 
+#' @param tv_H \code{matrix} Indices of time-varying elements in \code{H}. See details.
+#' @param tv_R \code{matrix} Indices of time-varying elements in \code{R}. See details. 
+#' @param tv_Q \code{matrix} Indices of time-varying elements in \code{Q}. See details. 
 #' @param tv_cc \code{matrix} Indices of time-varying elements in \code{cc}. See details. 
 #' @param tv_dd \code{matrix} Indices of time-varying elements in \code{dd}. See details. 
-#' @param tv_HG \code{matrix} Indices of time-varying elements in \code{HG}. See details.
 #' @param X \code{matrix} containing data used in time-varying parameters.
 #' @return An object of class \code{\linkS4class{DLM}}.
 #' @seealso \code{\linkS4class{DLM}}
@@ -68,17 +68,18 @@ dimlen <- function(x) {
 #' \describe{
 #' \item{\code{T}}{\code{"Matrix"}. The \eqn{T} matrix.}
 #' \item{\code{Z}}{\code{"Matrix"}. The \eqn{Z} matrix.}
-#' \item{\code{HH}}{\code{"Matrix"}. The \eqn{H H'} matrix.}
-#' \item{\code{GG}}{\code{"Matrix"}. The \eqn{G G'} matrix.}
+#' \item{\code{H}}{\code{"Matrix"}. The \eqn{H} matrix.}
+#' \item{\code{Q}}{\code{"Matrix"}. The \eqn{Q} matrix.}
+#' \item{\code{R}}{\code{"Matrix"}. The \eqn{R} matrix.}
 #' \item{\code{P1}}{\code{"Matrix"}. The \eqn{P_1} matrix with the covariance of the initial states.}
 #' \item{\code{a1}}{\code{"Matrix"}. The \eqn{a_1} vector with the mean of initial states.}
 #' \item{\code{dd}}{\code{"Matrix"}. The \eqn{d} vector.}
 #' \item{\code{cc}}{\code{"Matrix"}. The \eqn{c} vector.}
-#' \item{\code{HG}}{\code{"Matrix"}. The \eqn{H G'} matrix.}
 #' \item{\code{tv_T}}{\code{"matrix"}. Time varying indices for the \code{T} slot. See details.}
 #' \item{\code{tv_Z}}{\code{"matrix"}. Time varying indices for the \code{Z} slot. See details.}
-#' \item{\code{tv_HH}}{\code{"matrix"}. Time varying indices for the \code{HH} slot. See details.}
-#' \item{\code{tv_GG}}{\code{"matrix"}. Time varying indices for the \code{GG} slot. See details.}
+#' \item{\code{tv_H}}{\code{"matrix"}. Time varying indices for the \code{H} slot. See details.}
+#' \item{\code{tv_Q}}{\code{"matrix"}. Time varying indices for the \code{Q} slot. See details.}
+#' \item{\code{tv_R}}{\code{"matrix"}. Time varying indices for the \code{R} slot. See details.}
 #' \item{\code{tv_cc}}{\code{"matrix"}. Time varying indices for the \code{cc} slot. See details.}
 #' \item{\code{tv_dd}}{\code{"matrix"}. Time varying indices for the \code{dd} slot. See details.}
 #' \item{\code{tv_HG}}{\code{"matrix"}. Time varying indices for the \code{HG} slot. See details.}
@@ -103,8 +104,9 @@ dimlen <- function(x) {
 setClass("DLM",
          representation(T = "Matrix",
                         Z = "Matrix",
-                        HH = "Matrix",
-                        GG = "Matrix",
+                        H = "Matrix",
+                        Q = "Matrix",
+                        R = "Matrix",
                         P1 = "Matrix",
                         a1 = "Matrix",
                         dd = "Matrix",
@@ -160,12 +162,10 @@ validity.DLM <- function(object) {
 
 setValidity("DLM", validity.DLM)
 
-
-
 empty_tv_idx <- function() matrix(nrow=0, ncol= 3)
 
 #' @rdname DLM-class
-DLM <- function(T, Z, HH, GG, a1 = NULL, P1 = NULL,
+DLM <- function(T, Z, H, Q, R = NULL, a1 = NULL, P1 = NULL,
                 cc = NULL, dd = NULL, HG = NULL,
                 tv_T = NULL, tv_HH = NULL,
                 tv_Z = NULL, tv_GG = NULL,
@@ -218,10 +218,10 @@ DLM <- function(T, Z, HH, GG, a1 = NULL, P1 = NULL,
   } else {
     X <- Matrix(X)
   }
-  new("DLM", T = T, HH = HH, Z = Z, GG =GG,
-      a1 = a1, P1 = P1, cc = cc, dd = dd, HG = HG,
-      tv_T = tv_T, tv_HH = tv_HH,
-      tv_Z = tv_Z, tv_GG = tv_GG, tv_HG = tv_HG,
+  new("DLM", T = T, H = H, Z = Z, Q = Q, R = R,
+      a1 = a1, P1 = P1, cc = cc, dd = dd,
+      tv_T = tv_T, tv_H = tv_H,
+      tv_Z = tv_Z, tv_Q = tv_Q, tv_R = tv_R,
       tv_cc = tv_cc, tv_dd = tv_dd,
       X = X)
 }

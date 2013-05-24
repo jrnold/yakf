@@ -22,7 +22,6 @@ Collate:
     'DlmSamples-class.R'
     'dlm_recursion.R'
     'add-method.R'
-    'dlm_arma.R'
     'dlm_seasonal.R'
     'dlm_spline.R'
     'dlm-accessors.R'
@@ -36,4 +35,5 @@ Collate:
     'KalmanFilterBatch-class.R'
     'kalman_filter2.R'
     'kalman_smooth_seq.R'
+    'dlm_arma.R'
 VignetteBuilder: knitr
