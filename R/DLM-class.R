@@ -134,7 +134,9 @@ setClass("DLM",
                         Q = "DlmMatrix",
                         R = "DlmMatrix",
                         P1 = "Matrix",
-                        a1 = "Matrix"))
+                        a1 = "Matrix",
+                        cc = "DlmMatrix",
+                        dd = "DlmMatrix"))
 
 validity.DLM <- function(object) {
   # Matrix Dimensions
