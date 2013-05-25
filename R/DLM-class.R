@@ -140,13 +140,16 @@ validity.DLM <- function(object) {
   # Matrix Dimensions
   m <- nrow(object@T[[1]]) # number of states
   p <- nrow(object@Z[[1]]) # number of columns
+  r <- nrow(object@Q[[1]])
   matdims <- list(T = c(m, m),
                   Z = c(p, m),
-                  HH = c(m, m),
-                  GG = c(p, p),
+                  H = c(p, p),
+                  R = c(m, r),
+                  Q = c(r, r),
                   a1 = c(m, 1L),
                   P1 = c(m, m),
-                  HG = c(m, p))
+                  cc = c(p, 1L),
+                  dd = c(m, 1L))
 
   # Check that matrices have consistent dimensions
   for (i in seq_along(matdims)) {
@@ -185,62 +188,18 @@ setValidity("DLM", validity.DLM)
 empty_tv_idx <- function() matrix(nrow=0, ncol= 3)
 
 #' @rdname DLM-class
-DLM <- function(T, Z, H, Q, R = NULL, a1 = NULL, P1 = NULL,
-                cc = NULL, dd = NULL, kappa = 10e6) {
-  T <- DlmMatrix(T)
-  Z <- DlmMatrix(Z)
-  H <- DlmMatrix(H)
-  Q <- DlmMatrix(Q)
-  
-  
-  N <- nrow(Z)
-  m <- nrow(T)
-  # optional system matrices
-  if (is.null(a1)) {
-    a1 <- Matrix(0, m, 1)
-  } else {
-    a1 <- Matrix(a1)
-  }
-
-  kappa <- max(1, diag(tcrossprod(GG)), diag(tcrossprod(HH)))
-
-  if (is.null(P1)) {
-    P1 <- Diagonal(m, x = kappa * 10^6)
-  } else {
-    P1 <- Matrix(P1)
-  }
-  if (is.null(cc)) {
-    cc <- Matrix(0, N, 1)
-  } else {
-    cc <- Matrix(cc)
-  }
-  if (is.null(dd)) {
-    dd <- Matrix(0, m, 1)
-  } else {
-    dd <- Matrix(dd)
-  }
-  if (is.null(HG)) {
-    HG <- Matrix(0, m, N)
-  } else {
-    HG <- Matrix(HG)
-  }
-  # time varying matrices
-  if (is.null(tv_T)) tv_T <- empty_tv_idx()
-  if (is.null(tv_Z)) tv_Z <- empty_tv_idx()
-  if (is.null(tv_HH)) tv_HH <- empty_tv_idx()
-  if (is.null(tv_GG)) tv_GG <- empty_tv_idx()
-  if (is.null(tv_cc)) tv_cc <- empty_tv_idx()
-  if (is.null(tv_dd)) tv_dd <- empty_tv_idx()
-  if (is.null(tv_HG)) tv_HG <- empty_tv_idx()
-  if (is.null(X)) {
-    X <- Matrix(nrow=0, ncol=0)
-  } else {
-    X <- Matrix(X)
-  }
-  new("DLM", T = T, H = H, Z = Z, Q = Q, R = R,
-      a1 = a1, P1 = P1, cc = cc, dd = dd,
-      tv_T = tv_T, tv_H = tv_H,
-      tv_Z = tv_Z, tv_Q = tv_Q, tv_R = tv_R,
-      tv_cc = tv_cc, tv_dd = tv_dd,
-      X = X)
+DLM <- function(T, Z, H, Q,
+                R = Matrix(diag(nrow(Q))),
+                a1 = Matrix(rep(0, nrow(T))),
+                P1 = Matrix(diag(nrow(T)) * max(diag(Q)) * kappa),
+                cc = Matrix(0, nrow=nrow(T)),
+                dd = Matrix(0, nrow=nrow(Z))) {
+  new("DLM",
+      T = DlmMatrix(T),
+      H = DlmMatrix(H),
+      Z = DlmMatrix(Z),
+      Q = DlmMatrix(Q),
+      R = DlmMatrix(R),
+      a1 = Matrix(a1),
+      P1 = Matrix(P1))
 }
