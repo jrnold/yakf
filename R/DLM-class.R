@@ -203,5 +203,7 @@ DLM <- function(T, Z, H, Q,
       Q = DlmMatrix(Q),
       R = DlmMatrix(R),
       a1 = Matrix(a1),
-      P1 = Matrix(P1))
+      P1 = Matrix(P1),
+      cc = DlmMatrix(cc),
+      dd = DlmMatrix(dd))
 }
