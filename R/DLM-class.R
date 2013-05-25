@@ -24,6 +24,15 @@ setClass("DlmMatrix",
          contains = "ListOrMatrix",
          prototype = Matrix(nrow = 0, ncol = 0))
 
+DlmMatrix <- function(x) {
+  if (is(x, "list")) {
+    x <- lapply(x, Matrix)
+  } else {
+    x <- Matrix(x)
+  }
+  new("DlmMatrix", x)
+}
+
 setMethod("[[", c(x = "DlmMatrix"),
           function(x, i, j) {
             if (is(x, "list")) {
@@ -37,28 +46,9 @@ setMethod("[[", c(x = "DlmMatrix"),
 is_tv <- function(object) is(object, "list")
 
 ## check that all items in a sequence are identical
-thesame <- function(x) sum(!duplicated(x)) == 1
-
-## check_indices <- function(x, d, ncol_X, name) {
-##   if (ncol(x) != 3) {
-##     return(sprintf("ncol(%s) != 3"))
-##   }
-##   if (nrow(x) > 0) {
-##     if (mode(x) != "numeric") {
-##       return(sprintf("%s must be numeric", name))
-##     }
-##     if (! all(as.integer(x[ , 1]) %in% seq_len(d[1]))) {
-##       return(sprintf("invalid row indices for %s", name))
-##     }
-##     if (! all(as.integer(x[ , 2]) %in% seq_len(d[2]))) {
-##       return(sprintf("invalid column indices for %s", name))
-##     }
-##     if (! all(as.integer(x[ , 3]) %in% seq_len(ncol_X))) {
-##       return(sprintf("invalid X column index for %s", name))
-##     }
-##   }
-##   TRUE
-## }
+thesame <- function(x) {
+  sum(!duplicated(x)) == 1
+}
 
 dimlen <- function(x) {
   if (is.null(dim(x))) {
@@ -144,7 +134,7 @@ setClass("DLM",
                         Q = "DlmMatrix",
                         R = "DlmMatrix",
                         P1 = "Matrix",
-                        a1 = "Matrix")
+                        a1 = "Matrix"))
 
 validity.DLM <- function(object) {
   # Matrix Dimensions
@@ -158,13 +148,7 @@ validity.DLM <- function(object) {
                   P1 = c(m, m),
                   HG = c(m, p))
 
-  ## Check that all time-varying matrices have the same length
-  tv_mat <- sapply(names(matdims), function(x) is_tv(slot(object, x)))
-  if (! thesame(sapply(names(matdims)[tv_mat],
-                       function(x) length(slot(object, x))))) {
-    return("Not all time-varying system matrices have the same length")
-  }
-  
+  # Check that matrices have consistent dimensions
   for (i in seq_along(matdims)) {
     slotname <- names(matdims)[i]
     x <- slot(object, slotname)
@@ -179,6 +163,14 @@ validity.DLM <- function(object) {
                      sQuote(slotname), expected[1], expectedp[2]))
     }
   }
+
+  # Check that all time-varying matrices have the same length
+  tv_mat <- sapply(names(matdims), function(x) is_tv(slot(object, x)))
+  if (! thesame(sapply(names(matdims)[tv_mat],
+                       function(x) length(slot(object, x))))) {
+    return("Not all time-varying system matrices have the same length")
+  }
+  
   # Check for symmetric matrices
   for (name in c("H", "G", "P")) {
     if (! isSymmetric(slot(object, name))) {
@@ -187,65 +179,68 @@ validity.DLM <- function(object) {
   }
   TRUE
 }
-
+         
 setValidity("DLM", validity.DLM)
 
 empty_tv_idx <- function() matrix(nrow=0, ncol= 3)
 
 #' @rdname DLM-class
-## DLM <- function(T, Z, H, Q, R = NULL, a1 = NULL, P1 = NULL,
-##                 cc = NULL, dd = NULL)
-##   T <- Matrix(T)
-##   Z <- Matrix(Z)
-##   HH <- Matrix(HH)
-##   GG <- Matrix(GG)
+DLM <- function(T, Z, H, Q, R = NULL, a1 = NULL, P1 = NULL,
+                cc = NULL, dd = NULL, kappa = 10e6) {
+  T <- DlmMatrix(T)
+  Z <- DlmMatrix(Z)
+  H <- DlmMatrix(H)
+  Q <- DlmMatrix(Q)
   
-##   N <- nrow(Z)
-##   m <- nrow(T)
-##   # optional system matrices
-##   if (is.null(a1)) {
-##     a1 <- Matrix(0, m, 1)
-##   } else {
-##     a1 <- Matrix(a1)
-##   }
-##   kappa <- max(1, diag(tcrossprod(GG)), diag(tcrossprod(HH)))
-##   if (is.null(P1)) {
-##     P1 <- Diagonal(m, x = kappa * 10^6)
-##   } else {
-##     P1 <- Matrix(P1)
-##   }
-##   if (is.null(cc)) {
-##     cc <- Matrix(0, N, 1)
-##   } else {
-##     cc <- Matrix(cc)
-##   }
-##   if (is.null(dd)) {
-##     dd <- Matrix(0, m, 1)
-##   } else {
-##     dd <- Matrix(dd)
-##   }
-##   if (is.null(HG)) {
-##     HG <- Matrix(0, m, N)
-##   } else {
-##     HG <- Matrix(HG)
-##   }
-##   # time varying matrices
-##   if (is.null(tv_T)) tv_T <- empty_tv_idx()
-##   if (is.null(tv_Z)) tv_Z <- empty_tv_idx()
-p##   if (is.null(tv_HH)) tv_HH <- empty_tv_idx()
-##   if (is.null(tv_GG)) tv_GG <- empty_tv_idx()
-##   if (is.null(tv_cc)) tv_cc <- empty_tv_idx()
-##   if (is.null(tv_dd)) tv_dd <- empty_tv_idx()
-##   if (is.null(tv_HG)) tv_HG <- empty_tv_idx()
-##   if (is.null(X)) {
-##     X <- Matrix(nrow=0, ncol=0)
-##   } else {
-##     X <- Matrix(X)
-##   }
-##   new("DLM", T = T, H = H, Z = Z, Q = Q, R = R,
-##       a1 = a1, P1 = P1, cc = cc, dd = dd,
-##       tv_T = tv_T, tv_H = tv_H,
-##       tv_Z = tv_Z, tv_Q = tv_Q, tv_R = tv_R,
-##       tv_cc = tv_cc, tv_dd = tv_dd,
-##       X = X)
-## }
+  
+  N <- nrow(Z)
+  m <- nrow(T)
+  # optional system matrices
+  if (is.null(a1)) {
+    a1 <- Matrix(0, m, 1)
+  } else {
+    a1 <- Matrix(a1)
+  }
+
+  kappa <- max(1, diag(tcrossprod(GG)), diag(tcrossprod(HH)))
+
+  if (is.null(P1)) {
+    P1 <- Diagonal(m, x = kappa * 10^6)
+  } else {
+    P1 <- Matrix(P1)
+  }
+  if (is.null(cc)) {
+    cc <- Matrix(0, N, 1)
+  } else {
+    cc <- Matrix(cc)
+  }
+  if (is.null(dd)) {
+    dd <- Matrix(0, m, 1)
+  } else {
+    dd <- Matrix(dd)
+  }
+  if (is.null(HG)) {
+    HG <- Matrix(0, m, N)
+  } else {
+    HG <- Matrix(HG)
+  }
+  # time varying matrices
+  if (is.null(tv_T)) tv_T <- empty_tv_idx()
+  if (is.null(tv_Z)) tv_Z <- empty_tv_idx()
+  if (is.null(tv_HH)) tv_HH <- empty_tv_idx()
+  if (is.null(tv_GG)) tv_GG <- empty_tv_idx()
+  if (is.null(tv_cc)) tv_cc <- empty_tv_idx()
+  if (is.null(tv_dd)) tv_dd <- empty_tv_idx()
+  if (is.null(tv_HG)) tv_HG <- empty_tv_idx()
+  if (is.null(X)) {
+    X <- Matrix(nrow=0, ncol=0)
+  } else {
+    X <- Matrix(X)
+  }
+  new("DLM", T = T, H = H, Z = Z, Q = Q, R = R,
+      a1 = a1, P1 = P1, cc = cc, dd = dd,
+      tv_T = tv_T, tv_H = tv_H,
+      tv_Z = tv_Z, tv_Q = tv_Q, tv_R = tv_R,
+      tv_cc = tv_cc, tv_dd = tv_dd,
+      X = X)
+}
