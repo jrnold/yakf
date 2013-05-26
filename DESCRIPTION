@@ -22,5 +22,9 @@ Collate:
     'Ops-methods.R'
     'MatrixOrMatrixList-class.R'
     'SSM-class.R'
-    'bd-method.R'
+    'rbind2-methods.R'
+    'cbind2-methods.R'
+    'bd-methods.R'
+    'add-methods.R'
+    'dim-methods.R'
 VignetteBuilder: knitr

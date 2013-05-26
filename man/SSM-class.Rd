@@ -5,11 +5,8 @@
 \alias{SSM-class}
 \title{SSM class}
 \usage{
-  SSM(T, Z, H, Q, R = Matrix(diag(nrow(Q))),
-    a1 = Matrix(rep(0, nrow(T))),
-    P1 = Matrix(diag(nrow(T)) * max(diag(Q)) * kappa),
-    cc = Matrix(0, nrow = nrow(T)),
-    dd = Matrix(0, nrow = nrow(Z)))
+  SSM(T, Z, H, Q, R = NULL, a1 = NULL, P1 = NULL,
+    cc = NULL, dd = NULL, kappa = 1e+07)
 }
 \arguments{
   \item{T}{\code{Matrix} of dimension m x m.}
@@ -36,6 +33,9 @@
 
   \item{cc}{\code{Matrix} of dimension m. If \code{NULL},
   then set to a 0 vector.}
+
+  \item{kappa}{Default multiplier for diagonal values of
+  \code{P1}, if \code{P1 = NULL}.}
 }
 \value{
   An object of class \code{\linkS4class{SSM}}.
@@ -63,9 +63,9 @@
 }
 
 \section{Details}{
-  The structure and notation of SSM models in this class is
-  based on that used in SsfPack and \pkg{dlm}. See the
-  package vignette for details.
+  The structure and notation of state spece models
+  represented this class is based on that used in SsfPack
+  and \pkg{dlm}. See the package vignette for details.
 }
 \references{
   Giovanni Petris (2010), An R Package for Dynamic Linear

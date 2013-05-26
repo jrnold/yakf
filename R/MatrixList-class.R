@@ -2,7 +2,20 @@
 #" @export MatrixList
 NULL
 
+#' @name MatrixList-class
 #' @rdname MatrixList-class
+#' @docType class
+#' @aliases MatrixList-class
+#' @aliases Ops,MatrixList,MatrixList-method
+#' @aliases Ops,MatrixList,Matrix-method
+#' @aliases Ops,Matrix,MatrixList-method
+#' @aliases rbind2,MatrixList,MatrixList-method
+#' @aliases rbind2,MatrixList,Matrix-method
+#' @aliases rbind2,Matrix,MatrixList-method
+#' @aliases cbind2,MatrixList,MatrixList-method
+#' @aliases cbind2,MatrixList,Matrix-method
+#' @aliases cbind2,Matrix,MatrixList-method
+#' @aliases dim,MatrixList-method
 #' @title List of Matrix objects
 #'
 #' @description A list of \code{\linkS4class{Matrix}} objects, which must all
@@ -10,7 +23,7 @@ NULL
 #'
 #' @section Extends:
 #'
-#' \description{
+#' \describe{
 #' \item{\code{list}}{Directly.}
 #' }
 setClass("MatrixList", contains = "list")
@@ -38,14 +51,3 @@ validity.MatrixList <- function(object) {
 }
 
 setValidity("MatrixList", validity.MatrixList)
-
-dim.MatrixList <- function(x) {
-  if (length(x)) {
-    dim(x[[1]])
-  } else {
-    rep(0L, 2)
-  }
-}
-
-setMethod("dim", c(x = "MatrixList"), dim.MatrixList)
-

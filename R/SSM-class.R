@@ -24,6 +24,7 @@ NULL
 #' @param a1 \code{Matrix} of length m. If \code{NULL}, then set to a 0 vector.
 #' @param dd \code{Matrix} of dimension N. If \code{NULL}, then set to a 0 vector.
 #' @param cc \code{Matrix} of dimension m. If \code{NULL}, then set to a 0 vector.
+#' @param kappa Default multiplier for diagonal values of \code{P1}, if \code{P1 = NULL}.
 #' @return An object of class \code{\linkS4class{SSM}}.
 #' @seealso \code{\linkS4class{SSM}}
 #'

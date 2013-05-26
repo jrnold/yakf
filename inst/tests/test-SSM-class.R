@@ -30,8 +30,8 @@ test_that("SSM catches invalid matrices", {
 test_that("SSM catches different length time-varying matrices", {
   m <- 3
   p <- 3
-  args <- list(T = MatrixList(replicate(3, Matrix(diag(m)))),
-               Z = MatrixList(replicate(2, Matrix(1, p, m))),
+  args <- list(T = replicate(3, Matrix(diag(m))),
+               Z = replicate(2, Matrix(1, p, m)),
                H = Matrix(diag(p)),
                Q = Matrix(diag(m)))
   expect_error(do.call(SSM, args), "invalid class")
