@@ -141,3 +141,26 @@ SSM <- function(T, Z, H, Q,
   new("SSM", T = T, Z = Z, H = H, Q = Q, R = R,
       a1 = a1, P1 = P1, cc = cc, dd = dd)
 }
+
+is_tv_matrix <- function(object) {
+  mats <- c("T", "Z", "H", "R", "Q", "cc", "dd")
+  ret <- sapply(mats, function(x) is(slot(object, x), "MatrixList"))
+  names(ret) <- mats
+  ret
+}
+
+dim.SSM <- function(x) {
+  tv_mats <- is_tv_matrix(x)
+  if (any(tv_mats)) {
+    n <- length(slot(x, names(tv_mats)[tv_mats][1]))
+  } else {
+    n <- 0L
+  }
+  c(p = nrow(x@Z),
+    m = nrow(x@T),
+    r = ncol(x@R),
+    n = n)
+}
+
+setMethod("dim", "SSM", dim.SSM)
+          
