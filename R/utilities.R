@@ -1,5 +1,3 @@
-setClassUnion("ListOrNull", c("list", "NULL"))
-
 len_one_arg <- function(x, name) {
   if (length(x) > 1) {
     x <- x[1]
@@ -16,7 +14,8 @@ check_positive <- function(x, name, include_zero = FALSE) {
   }
 }
 
-
 crosssum <- function(x) x + t(x)
 
 symmetrize <- function(x) 0.5 * crosssum(x)
+
+thesame <- function(x) sum(!duplicated(x)) == 1
