@@ -42,6 +42,36 @@ setMethod("[[", c(x = "DlmMatrix"),
             }
           })
 
+`+.DlmMatrix` <- function(e1, e2) {
+  tv1 <- is_tv(e1)
+  tv2 <- is_tv(e2)
+  if (tv1 && tv2) {
+    DlmMatrix(mapply(bDiag, e1, e2))
+  } else if (tv1) {
+    DlmMatrix(lapply(e1, function(x) bDiag(x, e2)))
+  } else if (tv2) {
+    DlmMatrix(lapply(e2, function(x) bDiag(e1, x)))
+  } else {
+    DlmMatrix(bDiag(e1, e2))
+  }
+}
+ 
+setMethod("+", c(x = "DlmMatrix", y = "DlmMatrix"))
+
+`*.DlmMatrix` <- function(e1, e2) {
+  tv1 <- is_tv(e1)
+  tv2 <- is_tv(e2)
+  if (tv1 && tv2) {
+    DlmMatrix(mapply(`+`, e1, e2))
+  } else if (tv1) {
+    DlmMatrix(lapply(e1, function(x) x + e2))
+  } else if (tv2) {
+    DlmMatrix(lapply(e2, function(x) x + e1))
+  } else {
+    DlmMatrix(as(e1, "Matrix") + as(e2, "Matrix"))
+  }
+}
+
 ## Check if DlmMatrix is time varying
 is_tv <- function(object) is(object, "list")
 
@@ -186,8 +216,6 @@ validity.DLM <- function(object) {
 }
          
 setValidity("DLM", validity.DLM)
-
-empty_tv_idx <- function() matrix(nrow=0, ncol= 3)
 
 #' @rdname DLM-class
 DLM <- function(T, Z, H, Q,
