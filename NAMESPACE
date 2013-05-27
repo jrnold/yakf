@@ -1,5 +1,7 @@
 export(MatrixList)
 export(SSM)
+export(ssm_polynomial)
+export(ssm_reg)
 export(ssm_samples)
 exportClasses(MatrixList)
 exportClasses(SSM)

@@ -66,7 +66,7 @@ ssm_samples <- function(object, n = NULL, a1 = NULL) {
   if (! tv['H']) {
     H_L <- chol(object@H)
   } else {
-    Q_L_tv <- lapply(object@H, chol)    
+    H_L_tv <- lapply(object@H, chol)    
   }
   if (! tv['Q']) {
     Q_L <- chol(object@Q)
