@@ -27,4 +27,6 @@ Collate:
     'bd-methods.R'
     'add-methods.R'
     'dim-methods.R'
+    'SsmSamples-class.R'
+    'ssm_samples.R'
 VignetteBuilder: knitr

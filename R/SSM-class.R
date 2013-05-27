@@ -124,13 +124,13 @@ SSM <- function(T, Z, H, Q,
   Z = MatrixOrMatrixList(Z)
   Q = MatrixOrMatrixList(Q)
   if (is.null(R)) {
-    R <- Matrix(diag(nrow(Q)))
+    R <- Diagonal(nrow(Q))
   }
   if (is.null(a1)) {
     a1 <-Matrix(rep(0, nrow(T)))
   }
   if (is.null(P1)) {
-    P1 <-Matrix(diag(nrow(T)) * max(diag(Q)) * kappa)
+    P1 <- Diagonal(nrow(T), kappa)
   }
   if (is.null(cc)) {
     cc <-Matrix(0, nrow=nrow(Z))
